@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="tabSelectText">#0000ee</color>
+    <color name="tabUnselectedText">#202020</color>
+
+    <color name="text_item_person_dark">#000000</color>
+    <color name="text_item_person_gray">#2C2C2C</color>
+    <color name="text_202020">#202020</color>
+    <color name="text_8a8a8a">#8a8a8a</color>
+    <color name="text_4d4a4a">#4d4a4a</color>
+    <color name="text_ff4848">#FF4848</color>
+    <color name="text_ffffff">#FFFFFF</color>
+    <color name="text_656bff">#656BFF</color>
+    <color name="text_4e4e4e">#4e4e4e</color>
+
+    <color name="line_e9e9e9">#E9E9E9</color>
+
+    <color name="bg_ffffff">#FFFFFF</color>
+    <color name="bg_f6f6f6">#F6F6F6</color>
+
+
+
+
+</resources>
