@@ -9,10 +9,9 @@ import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
-import com.example.matechatting.MainActivity
-import com.example.matechatting.MyOnTouchListener
+import com.example.matechatting.activity.MainActivity
+import com.example.matechatting.activity.MyOnTouchListener
 import com.example.matechatting.R
-import com.example.matechatting.databinding.FragmentHomeBinding
 import com.example.matechatting.databinding.FragmentMileListBinding
 import com.example.matechatting.myview.SideView
 import com.example.matechatting.utils.statusbar.StatusBarUtil

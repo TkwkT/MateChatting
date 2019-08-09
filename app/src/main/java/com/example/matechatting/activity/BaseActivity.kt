@@ -1,4 +1,4 @@
-package com.example.matechatting
+package com.example.matechatting.activity
 
 import android.content.Context
 import android.content.IntentFilter
@@ -11,6 +11,7 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import com.example.matechatting.R
 import com.example.matechatting.listener.NetworkConnectChangeReceiver
 import com.example.matechatting.myview.SlideFinishLayout
 import com.example.matechatting.utils.NetworkState
@@ -42,7 +43,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         //初始化广播接收器
         initNetworkLocalReceiver()
         //设置活动切换动画
-        setInOutAnimation(R.anim.slide_in_right, R.anim.slide_out_left, R.anim.slide_in_left, R.anim.slide_out_right)
+        setInOutAnimation(
+            R.anim.slide_in_right,
+            R.anim.slide_out_left,
+            R.anim.slide_in_left,
+            R.anim.slide_out_right
+        )
 
     }
     protected fun initBinding(){

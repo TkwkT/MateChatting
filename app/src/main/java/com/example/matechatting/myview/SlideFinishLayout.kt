@@ -8,7 +8,7 @@ import android.view.*
 import android.widget.LinearLayout
 import androidx.databinding.ViewDataBinding
 import androidx.viewpager.widget.ViewPager
-import com.example.matechatting.BaseActivity
+import com.example.matechatting.activity.BaseActivity
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs

@@ -3,7 +3,6 @@ package com.example.matechatting.fragment
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,10 +10,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.databinding.DataBindingUtil
-import com.example.matechatting.ChangePasswordActivity
-import com.example.matechatting.LoginActivity
+import com.example.matechatting.activity.ChangePasswordActivity
+import com.example.matechatting.activity.LoginActivity
 import com.example.matechatting.R
-import com.example.matechatting.databinding.FragmentMileListBinding
+import com.example.matechatting.activity.MyinfoActivity
 import com.example.matechatting.databinding.FragmentMineBinding
 
 class MineFragment : BaseFragment() {
@@ -54,8 +53,12 @@ class MineFragment : BaseFragment() {
         changePassword.isEnabled = true
         myInformation.isEnabled = true
         bindPhone.isEnabled = true
-        val intent = Intent(requireActivity(), ChangePasswordActivity::class.java)
+        var intent = Intent(requireActivity(), ChangePasswordActivity::class.java)
         changePassword.setOnClickListener {
+            transferLoginActivity(intent)
+        }
+        intent = Intent(requireActivity(),MyinfoActivity::class.java)
+        myInformation.setOnClickListener {
             transferLoginActivity(intent)
         }
     }
@@ -91,7 +94,6 @@ class MineFragment : BaseFragment() {
     }
 
     private fun transferLoginActivity(intent:Intent) {
-
         requireActivity().startActivityFromFragment(this, intent, 0x123)
     }
 

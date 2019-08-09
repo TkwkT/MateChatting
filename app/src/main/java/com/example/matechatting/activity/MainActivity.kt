@@ -1,12 +1,12 @@
-package com.example.matechatting
+package com.example.matechatting.activity
 
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import com.example.matechatting.R
 import com.example.matechatting.adapter.PagerAdapter
 import com.example.matechatting.constvalue.MainConstValue
 import com.example.matechatting.databinding.ActivityMainBinding

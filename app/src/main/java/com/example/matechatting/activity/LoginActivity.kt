@@ -1,4 +1,4 @@
-package com.example.matechatting
+package com.example.matechatting.activity
 
 import android.app.Activity
 import android.content.Context
@@ -15,10 +15,11 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.edit
+import com.example.matechatting.R
 import com.example.matechatting.databinding.ActivityLoginBinding
 import com.example.matechatting.listener.EditTextTextChangeListener
-import com.example.matechatting.utils.LoginState
-import com.example.matechatting.utils.LoginUtil
+import com.example.matechatting.utils.functionutil.LoginState
+import com.example.matechatting.utils.functionutil.LoginUtil
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     private lateinit var accountEdit: EditText
@@ -29,10 +30,9 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     private lateinit var loginButton: Button
     private lateinit var accountClear: ImageView
     private lateinit var passwordClear: ImageView
+    private lateinit var back:ImageView
     private var accountNotNull = false
     private var passwordNotNull = false
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -44,6 +44,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         initEditText()
         initClear()
         initButton()
+        initBack()
+        initForget()
     }
 
     private fun init() {
@@ -55,8 +57,24 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         passwordError = binding.loginTextErrorPassword
         accountClear = binding.loginAccountClear
         passwordClear = binding.loginPasswordClear
-        accountClear.visibility = View.GONE
-        passwordClear.visibility = View.GONE
+        back = binding.loginBack
+    }
+
+    private fun initForget(){
+        forgetText.setOnClickListener {
+            transferForgetActivity()
+        }
+    }
+
+    private fun transferForgetActivity(){
+        val intent = Intent(this, ForgetPasswordActivity::class.java)
+        startActivity(intent)
+    }
+
+    private fun initBack(){
+        back.setOnClickListener {
+            this.finish()
+        }
     }
 
 
@@ -139,8 +157,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
      * 并调用@link [checkAccount] 方法
      */
     private fun initButton() {
-        var account = ""
-        var password = ""
+        var account:String
+        var password:String
         loginButton.setOnClickListener {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 loginButton.background = this.resources.getDrawable(R.drawable.shape_bt_click, null)

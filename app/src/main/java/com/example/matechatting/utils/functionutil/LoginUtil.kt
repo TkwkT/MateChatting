@@ -1,12 +1,15 @@
-package com.example.matechatting.utils
+package com.example.matechatting.utils.functionutil
 
 import android.util.Log
 import com.example.matechatting.MyApplication
 import com.example.matechatting.database.AppDatabase
+import com.example.matechatting.utils.NetworkState
+import com.example.matechatting.utils.isNetworkConnected
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 
 /**
+ * 未实现
  * 网络验证账号密码
  */
 object LoginUtil {
@@ -29,9 +32,9 @@ object LoginUtil {
         val state = isNetworkConnected(MyApplication.getContext())
         if (state == NetworkState.NONE){
             Log.d("aaa","eee")
-            checkFromDatabase(account!!,password!!,callback)
+            checkFromDatabase(account!!, password!!, callback)
         }else{
-            checkFromNet(account!!,password!!,callback)
+            checkFromNet(account!!, password!!, callback)
         }
     }
 
