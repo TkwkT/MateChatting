@@ -9,28 +9,19 @@ import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 
 abstract class PermissionFragment : BaseFragment() {
     private val code = 0x1234
     private var currentPermission = ""
-    private var dialog: AlertDialog? = null
+    protected var dialog: AlertDialog? = null
 
-    open fun setDialog(dialog: AlertDialog) {
-        this.dialog = dialog
-    }
-
-    protected fun addAndCheckPermission(permission: String) {
-        checkPermission(permission)
-    }
-
-    protected fun addAndCheckPermissions(permissions: Array<out String>) {
+    protected fun checkPermissions(permissions: Array<out String>) {
         for (i: Int in 0 until permissions.size) {
-            checkPermission(permissions[i])
+            this.checkPermission(permissions[i])
         }
     }
 
-    private fun checkPermission(permission: String) {
+    protected fun checkPermission(permission: String) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             val i = ContextCompat.checkSelfPermission(requireActivity(), permission)
             if (i != PackageManager.PERMISSION_GRANTED) {

@@ -60,7 +60,7 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginLeft="15dp"
                 android:layout_marginRight="15dp"
-                android:background="@drawable/shape_personsign"
+                android:background="@drawable/shape_circle_coner_white_big"
                 android:orientation="vertical">
 
             <EditText
