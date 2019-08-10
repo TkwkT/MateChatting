@@ -203,7 +203,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         val intent = Intent(this, MainActivity::class.java)
         intent.putExtra("account", account)
         setResult(Activity.RESULT_OK, intent)
-        finish()
+//        finish()
     }
 
     /**

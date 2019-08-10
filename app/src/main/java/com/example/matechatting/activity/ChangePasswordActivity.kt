@@ -209,11 +209,11 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
         var new:String
         var again:String
         overButton.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                overButton.background = this.resources.getDrawable(R.drawable.shape_bt_click, null)
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                overButton.background = this.resources.getDrawable(R.drawable.shape_bt_click)
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                overButton.background = this.resources.getDrawable(R.drawable.shape_bt_click, null)
+//            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                overButton.background = this.resources.getDrawable(R.drawable.shape_bt_click)
+//            }
             Log.d("aaa", "aaa")
             old = oldEdit.text.toString()
             new = newEdit.text.toString()

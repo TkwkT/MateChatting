@@ -7,11 +7,11 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import com.example.matechatting.R
-import com.example.matechatting.databinding.ActivityPersonsignBinding
+import com.example.matechatting.databinding.ActivityPersonSignBinding
 import com.example.matechatting.listener.EditTextTextChangeListener
 import com.example.matechatting.utils.statusbar.StatusBarUtil
 
-class PersonsignActivity : BaseActivity<ActivityPersonsignBinding>() {
+class PersonsignActivity : BaseActivity<ActivityPersonSignBinding>() {
     private lateinit var tv_finish: TextView
     private lateinit var edittext: EditText
     private lateinit var back: ImageView
@@ -62,6 +62,6 @@ class PersonsignActivity : BaseActivity<ActivityPersonsignBinding>() {
     }
 
     override fun getLayoutId(): Int {
-        return R.layout.activity_personsign
+        return R.layout.activity_person_sign
     }
 }

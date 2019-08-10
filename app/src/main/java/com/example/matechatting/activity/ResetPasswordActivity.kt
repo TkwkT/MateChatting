@@ -1,5 +1,6 @@
 package com.example.matechatting.activity
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.text.SpannableStringBuilder
@@ -46,6 +47,7 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
         initEdit()
         initClear()
         initCanSeePasswordListener()
+        initOverButton()
     }
 
     private fun initView(){
@@ -146,13 +148,17 @@ class ResetPasswordActivity : BaseActivity<ActivityResetPasswordBinding>() {
      * 未实现
      */
     private fun initOverButton(){
+        val intent = Intent(this,LoginActivity::class.java)
         overButton.setOnClickListener {
-
+            transferLoginActivity(intent)
+        }
+        back.setOnClickListener {
+            transferLoginActivity(intent)
         }
     }
 
-    private fun transferLoginActivity(){
-
+    private fun transferLoginActivity(intent:Intent){
+        startActivityForResult(intent,0x123)
     }
 
 

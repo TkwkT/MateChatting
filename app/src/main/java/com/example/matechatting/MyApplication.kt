@@ -11,14 +11,14 @@ import io.reactivex.plugins.RxJavaPlugins
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return
-        }
+//        if (LeakCanary.isInAnalyzerProcess(this)) {
+//            return
+//        }
         RxJavaPlugins.setErrorHandler {
             val message = it.message?:""
             Log.d("aaa",message)
         }
-        sRefWatcher = LeakCanary.install(this)
+//        sRefWatcher = LeakCanary.install(this)
         context = applicationContext
     }
 

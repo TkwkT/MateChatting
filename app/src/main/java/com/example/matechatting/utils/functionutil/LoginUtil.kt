@@ -23,6 +23,8 @@ object LoginUtil {
      * @param callback 回调返回验证结果
      */
     fun checkAccount(account:String?,password:String?,callback:(state:Int,account:String) ->Unit){
+
+
         if (account.isNullOrEmpty()){
             callback(LoginState.ACCOUNT_NULL,"")
         }

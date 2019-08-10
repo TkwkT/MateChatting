@@ -9,7 +9,6 @@ import android.view.View
 import android.widget.EditText
 import android.widget.FrameLayout
 import android.widget.TextView
-import com.example.matechatting.databinding.ActivityMyinfoBinding
 import com.example.matechatting.utils.statusbar.StatusBarUtil
 import android.os.IBinder
 import android.view.MotionEvent
@@ -18,11 +17,12 @@ import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.example.matechatting.R
+import com.example.matechatting.databinding.ActivityMyInfoBinding
 
 /**
  * 未实现返回时上传数据@link [initBack]
  */
-class MyinfoActivity : BaseActivity<ActivityMyinfoBinding>() {
+class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
     private lateinit var tv_personsign: TextView
     private lateinit var tv_company: TextView
     private lateinit var tv_location: TextView
@@ -240,6 +240,6 @@ class MyinfoActivity : BaseActivity<ActivityMyinfoBinding>() {
 
 
     override fun getLayoutId(): Int {
-        return R.layout.activity_myinfo
+        return R.layout.activity_my_info
     }
 }

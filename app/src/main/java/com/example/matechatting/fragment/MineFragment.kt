@@ -13,6 +13,7 @@ import androidx.databinding.DataBindingUtil
 import com.example.matechatting.activity.ChangePasswordActivity
 import com.example.matechatting.activity.LoginActivity
 import com.example.matechatting.R
+import com.example.matechatting.activity.BindPhoneActivity
 import com.example.matechatting.activity.MyinfoActivity
 import com.example.matechatting.databinding.FragmentMineBinding
 
@@ -53,30 +54,41 @@ class MineFragment : BaseFragment() {
         changePassword.isEnabled = true
         myInformation.isEnabled = true
         bindPhone.isEnabled = true
-        var intent = Intent(requireActivity(), ChangePasswordActivity::class.java)
+        val intentToChangePassword = Intent(requireActivity(), ChangePasswordActivity::class.java)
         changePassword.setOnClickListener {
-            transferLoginActivity(intent)
+            transferLoginActivity(intentToChangePassword)
         }
-        intent = Intent(requireActivity(),MyinfoActivity::class.java)
+        val intentToMyInfo = Intent(requireActivity(),MyinfoActivity::class.java)
         myInformation.setOnClickListener {
-            transferLoginActivity(intent)
+            transferLoginActivity(intentToMyInfo)
+        }
+        val intentToBindPhone = Intent(requireActivity(),BindPhoneActivity::class.java)
+        bindPhone.setOnClickListener {
+            transferLoginActivity(intentToBindPhone)
+        }
+        /**
+         * 美工查看用
+         */
+        val intentToLogin = Intent(requireActivity(), LoginActivity::class.java)
+        headLayout.setOnClickListener {
+            transferLoginActivity(intentToLogin)
         }
     }
 
     override fun initNotLogin() {
+        headName.text = "未登录"
+        headText.text = "快乐生活每一天"
+        headImage.isEnabled = false
+        changePassword.isEnabled = false
+        myInformation.isEnabled = false
+        bindPhone.isEnabled = false
         val intent = Intent(requireActivity(), LoginActivity::class.java)
         headLayout.setOnClickListener {
             transferLoginActivity(intent)
         }
-        headName.text = "未登录"
-        headText.text = "快乐生活每一天"
-        headImage.isEnabled = false
         functionLayout.setOnClickListener {
             transferLoginActivity(intent)
         }
-        changePassword.isEnabled = false
-        myInformation.isEnabled = false
-        bindPhone.isEnabled = false
     }
 
 
