@@ -1,5 +1,6 @@
 package com.example.matechatting.fragment
 
+import android.app.Dialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -7,13 +8,12 @@ import android.os.Build
 import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 
 abstract class PermissionFragment : BaseFragment() {
     private val code = 0x1234
     private var currentPermission = ""
-    protected var dialog: AlertDialog? = null
+    protected var dialog: Dialog? = null
 
     protected fun checkPermissions(permissions: Array<out String>) {
         for (i: Int in 0 until permissions.size) {
@@ -26,13 +26,17 @@ abstract class PermissionFragment : BaseFragment() {
             val i = ContextCompat.checkSelfPermission(requireActivity(), permission)
             if (i != PackageManager.PERMISSION_GRANTED) {
                 getPermission(permission)
+            }else{
+                doOnGetPermission()
             }
         }
     }
 
+    open fun doOnGetPermission(){}
+
     private fun getPermission(permission: String) {
         currentPermission = permission
-        ActivityCompat.requestPermissions(requireActivity(), arrayOf(permission), code)
+        requestPermissions(arrayOf(permission), code)
     }
 
     open fun showDialogTipUserGoToAppSetting(permission: String) {
@@ -49,6 +53,7 @@ abstract class PermissionFragment : BaseFragment() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            Log.d("aaa","onRequestPermissionsResult")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (requestCode == code && grantResults.isNotEmpty() && grantResults[0] != PackageManager.PERMISSION_GRANTED) {
                 val b = shouldShowRequestPermissionRationale(permissions[0])
@@ -61,6 +66,7 @@ abstract class PermissionFragment : BaseFragment() {
                 }
             } else {
                 currentPermission = ""
+                doOnGetPermission()
             }
         }
 
@@ -78,6 +84,7 @@ abstract class PermissionFragment : BaseFragment() {
                         dialog!!.dismiss()
                     }
                     currentPermission = ""
+                    doOnGetPermission()
                 }
             }
         }

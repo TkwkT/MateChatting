@@ -18,6 +18,7 @@ import androidx.core.content.edit
 import com.example.matechatting.R
 import com.example.matechatting.databinding.ActivityLoginBinding
 import com.example.matechatting.listener.EditTextTextChangeListener
+import com.example.matechatting.utils.ToastUtil
 import com.example.matechatting.utils.functionutil.LoginState
 import com.example.matechatting.utils.functionutil.LoginUtil
 
@@ -159,16 +160,18 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     private fun initButton() {
         var account:String
         var password:String
+        val toast = ToastUtil()
         loginButton.setOnClickListener {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                loginButton.background = this.resources.getDrawable(R.drawable.shape_bt_click, null)
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                loginButton.background = this.resources.getDrawable(R.drawable.shape_bt_click)
-            }
-            Log.d("aaa", "aaa")
-            account = accountEdit.text.toString()
-            password = passwordEdit.text.toString()
-            checkAccount(account, password)
+            toast.setToast(this,"当前网络未连接")
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+//                loginButton.background = this.resources.getDrawable(R.drawable.shape_bt_click, null)
+//            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                loginButton.background = this.resources.getDrawable(R.drawable.shape_bt_click)
+//            }
+//            Log.d("aaa", "aaa")
+//            account = accountEdit.text.toString()
+//            password = passwordEdit.text.toString()
+//            checkAccount(account, password)
         }
     }
 

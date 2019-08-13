@@ -22,4 +22,14 @@
 
     </declare-styleable>
 
+    <declare-styleable name="CropView">
+        <!--遮罩颜色-->
+        <attr name="bgColor" format="color"></attr>
+        <attr name="maskColor" format="color"></attr>
+        <attr name="borderColor" format="color"></attr>
+        <attr name="radius" format="dimension"></attr>
+        <attr name="maxScale" format="float"></attr>
+        <attr name="doubleClickScale" format="float"></attr>
+    </declare-styleable>
+
 </resources>

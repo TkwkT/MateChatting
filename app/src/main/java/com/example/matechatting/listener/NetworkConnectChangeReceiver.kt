@@ -15,11 +15,11 @@ class NetworkConnectChangeReceiver : BroadcastReceiver() {
             return
         }
         if (intent.action === ConnectivityManager.CONNECTIVITY_ACTION) {
-            when (isNetworkConnected(context)) {
-                NetworkState.MOBILE -> setToast("移动网络已连接", context)
-                NetworkState.WIFI -> setToast("WIFI网络已连接", context)
-                else -> setToast("网络连接已断开", context)
-            }
+//            when (isNetworkConnected(context)) {
+//                NetworkState.MOBILE -> setToast("移动网络已连接", context)
+//                NetworkState.WIFI -> setToast("WIFI网络已连接", context)
+//                else -> setToast("网络连接已断开", context)
+//            }
         }
     }
 

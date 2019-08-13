@@ -46,7 +46,6 @@ class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
     private lateinit var etEmail: EditText
     private lateinit var infoBack:ImageView
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         StatusBarUtil.setRootViewFitsSystemWindows(this, true)

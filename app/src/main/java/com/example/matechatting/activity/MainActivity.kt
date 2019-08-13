@@ -4,10 +4,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.example.matechatting.R
 import com.example.matechatting.adapter.PagerAdapter
+import com.example.matechatting.constvalue.ALBUM_REQUEST_CODE
+import com.example.matechatting.constvalue.LOGIN_REQUEST_CODE
 import com.example.matechatting.constvalue.MainConstValue
 import com.example.matechatting.databinding.ActivityMainBinding
 import com.example.matechatting.fragment.BaseFragment
@@ -97,20 +100,24 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), MainConstValue {
         })
     }
 
-    private fun getLoginState(){
+    private fun getLoginState() {
         val sp = getSharedPreferences("loginInfo", Context.MODE_PRIVATE)
-        BaseFragment.isLogin = sp.getBoolean("isLogin",true)
-        val account = sp.getString("account","")
-        BaseFragment.account = account?:""
+        BaseFragment.isLogin = sp.getBoolean("isLogin", true)
+        val account = sp.getString("account", "")
+        BaseFragment.account = account ?: ""
     }
 
-    override fun onActivityReenter(resultCode: Int, data: Intent?) {
-        super.onActivityReenter(resultCode, data)
-        if (resultCode == Activity.RESULT_OK && data != null){
-            BaseFragment.isLogin = data.getBooleanExtra("isLogin",false)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == LOGIN_REQUEST_CODE && data != null) {
+            BaseFragment.isLogin = data.getBooleanExtra("isLogin", false)
             val account = data.getStringExtra("account")
-            BaseFragment.account = account?:""
+            BaseFragment.account = account ?: ""
+        } else if (resultCode == Activity.RESULT_OK && requestCode == ALBUM_REQUEST_CODE && data != null) {
+            Log.d("aaa", "onActivityResult" + "调用")
+            fragmentList[2].onActivityResult(requestCode, resultCode, data)
         }
+
     }
 
     override fun getLayoutId(): Int {

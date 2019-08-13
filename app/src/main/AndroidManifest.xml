@@ -2,9 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 		  package="com.example.matechatting">
 	<!-- !!读内存权限 -->
-	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-
-	<!-- 网络状态权限 -->
+	<uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/> <!-- 网络状态权限 -->
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 	<uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 	<uses-permission android:name="android.permission.CHANGE_NETWORK_STATE"/>
@@ -18,9 +16,13 @@
 		android:roundIcon="@mipmap/ic_launcher_round"
 		android:supportsRtl="true"
 		android:theme="@style/AppTheme">
-		<activity android:name=".activity.BindPhoneActivity">
+		<activity android:name=".activity.HomeSearchActivity">
 		</activity>
-		<activity android:name=".activity.ResetPasswordActivity">
+		<activity android:name=".activity.ClipActivity">
+		</activity>
+		<activity android:name=".activity.AlbumActivity">
+		</activity>
+		<activity android:name=".activity.BindPhoneActivity">
 		</activity>
 		<activity android:name=".activity.ForgetPasswordActivity">
 		</activity>

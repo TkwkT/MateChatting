@@ -13,18 +13,19 @@ abstract class BaseFragment : Fragment() {
 
     protected fun init() {
         initView()
-        Log.d("aaa", isLogin.toString())
+//        Log.d("aaa", isLogin.toString())
         if (isLogin) {
             initLogin()
         } else {
             initNotLogin()
         }
     }
+
     abstract fun initView()
 
-    abstract fun initLogin()
+    open fun initLogin(){}
 
-    abstract fun initNotLogin()
+    open fun initNotLogin(){}
 
     /**
      * 监听网络状态

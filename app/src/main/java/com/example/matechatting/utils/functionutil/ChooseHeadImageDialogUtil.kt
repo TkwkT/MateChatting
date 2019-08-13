@@ -9,7 +9,7 @@ import android.view.View
 import android.widget.TextView
 import com.example.matechatting.R
 
-class ChooseHeadImageUtil {
+class ChooseHeadImageDialogUtil {
     private lateinit var chooseHeadImageDialog: Dialog
     private lateinit var chooseHeadInflater: View
     private lateinit var chooseHeadFromAlbum: TextView
@@ -37,7 +37,8 @@ class ChooseHeadImageUtil {
 
     private fun initChooseHeadFromAlbum(callback: () -> Unit) {
         chooseHeadFromAlbum.setOnClickListener {
-            callback
+            callback()
+            chooseHeadImageDialog.dismiss()
         }
     }
 

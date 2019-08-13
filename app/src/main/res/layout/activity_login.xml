@@ -114,7 +114,7 @@
 					android:textSize="12sp"
 					android:textColor="#929292"
 					android:lines="1"
-					android:inputType="text"
+					android:inputType="number"
 					android:layout_marginLeft="10dp"
 					android:layout_marginStart="10dp"/>
 
