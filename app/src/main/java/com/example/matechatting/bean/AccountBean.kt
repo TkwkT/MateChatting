@@ -7,5 +7,6 @@ import androidx.room.PrimaryKey
 data class AccountBean(
     @PrimaryKey
     val account:String,
-    val password:String
+    val password:String,
+    val token:String
 )

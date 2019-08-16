@@ -1,6 +1,5 @@
 package com.example.matechatting.database
 
-import android.accounts.Account
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
@@ -9,10 +8,13 @@ import com.example.matechatting.bean.AccountBean
 import io.reactivex.Single
 
 @Dao
-interface AccountDao{
+interface LoginDao{
 
     @Query("SELECT * FROM account WHERE account = :account")
     fun checkAccount(account:String): Single<AccountBean>
+
+    @Query("SELECT token FROM account WHERE account = :account")
+    fun getToken(account: String):Single<String>
 
     @Insert
     fun insertAccount(account:AccountBean)

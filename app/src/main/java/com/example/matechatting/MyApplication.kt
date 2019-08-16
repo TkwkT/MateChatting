@@ -3,7 +3,7 @@ package com.example.matechatting
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import com.squareup.leakcanary.LeakCanary
+import androidx.core.content.edit
 import com.squareup.leakcanary.RefWatcher
 import io.reactivex.plugins.RxJavaPlugins
 
@@ -27,12 +27,22 @@ class MyApplication : Application() {
 
         private var sRefWatcher: RefWatcher? = null
 
-        fun getRefWatcher(): RefWatcher {
-            return sRefWatcher!!
-        }
-
         fun getContext(): Context {
             return context
+        }
+
+        fun saveLoginState(account: String,token:String){
+            context.getSharedPreferences("loginInfo", Context.MODE_PRIVATE).edit {
+                putBoolean("isLogin", true)
+                putString("account", account)
+                putString("token",token)
+                commit()
+            }
+        }
+
+        fun getToken():String?{
+            val sharedPreferences = context.getSharedPreferences("loginInfo", Context.MODE_PRIVATE)
+            return sharedPreferences.getString("token","")
         }
     }
 

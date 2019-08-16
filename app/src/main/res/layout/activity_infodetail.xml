@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+		xmlns:app="http://schemas.android.com/apk/res-auto"
+		xmlns:tools="http://schemas.android.com/tools"
+		tools:context=".InfoDetailActivity">
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:orientation="vertical"
+		android:background="@color/bg_f6f6f6">
+
+		<!--toolbar-->
+		<androidx.appcompat.widget.Toolbar
+			app:layout_constraintTop_toTopOf="parent"
+			android:id="@+id/infodetail_toolbar"
+			android:layout_width="match_parent"
+			android:layout_height="?attr/actionBarSize"
+			android:background="@color/bg_ffffff"
+			app:contentInsetStart="0dp"
+			android:layout_gravity="center">
+
+			<FrameLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent">
+
+				<ImageView
+					android:layout_width="9dp"
+					android:layout_height="16dp"
+					android:id="@+id/ic_infodetail_back"
+					android:src="@drawable/ic_back"
+					android:layout_marginLeft="18dp"
+					android:layout_gravity="center_vertical"/>
+
+				<TextView
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginLeft="45dp"
+					android:text="详细信息"
+					android:textSize="16sp"
+					android:textColor="#202020"
+					android:layout_gravity="center_vertical"/>
+
+			</FrameLayout>
+		</androidx.appcompat.widget.Toolbar>
+
+		<ScrollView
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:overScrollMode="never">
+
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="15dp"
+				android:orientation="vertical">
+
+				<androidx.constraintlayout.widget.ConstraintLayout
+					android:id="@+id/Infodetail_headlayout"
+					android:layout_width="match_parent"
+					android:layout_height="83dp"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:background="@drawable/shape_circle_corner">
+
+					<de.hdodenhof.circleimageview.CircleImageView
+						android:id="@+id/infodetail_ivhead"
+						android:layout_width="56dp"
+						android:layout_height="56dp"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintLeft_toLeftOf="parent"
+						android:src="@drawable/ic_mine_head"
+						android:layout_marginLeft="11dp"
+						android:layout_marginStart="11dp"/>
+
+					<TextView
+						android:id="@+id/Infodetail_name"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						app:layout_constraintLeft_toRightOf="@+id/infodetail_ivhead"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						android:text="@string/Noword"
+						android:textSize="18sp"
+						android:textColor="#434343"
+						android:layout_marginLeft="12dp"
+						app:layout_constraintVertical_bias="0.335"/>
+
+					<TextView
+						android:id="@+id/Infodetail_zhuanye"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						app:layout_constraintLeft_toRightOf="@+id/infodetail_ivhead"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintVertical_bias="0.75"
+						android:layout_marginLeft="12dp"
+						android:text="专业： "
+						android:textColor="#5c5c5c"
+						android:textSize="12sp"/>
+
+					<TextView
+						android:id="@+id/infodetail_major"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						app:layout_constraintLeft_toRightOf="@+id/Infodetail_zhuanye"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						app:layout_constraintVertical_bias="0.75"
+						android:text="@string/Noword"
+						android:textSize="12sp"
+						android:textColor="#636363"
+						android:singleLine="true"
+						android:ellipsize="marquee"/>
+
+					<TextView
+						android:id="@+id/Infodetail_graduation"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						app:layout_constraintRight_toRightOf="parent"
+						app:layout_constraintTop_toTopOf="parent"
+						app:layout_constraintBottom_toBottomOf="parent"
+						android:layout_marginRight="12dp"
+						app:layout_constraintVertical_bias="0.335"
+						android:text="2019级毕业"
+						android:textColor="#919191"
+						android:textSize="12sp"/>
+				</androidx.constraintlayout.widget.ConstraintLayout>
+
+				<!--下面的linear-->
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:id="@+id/Infodetail_infolayout"
+					app:layout_constraintTop_toBottomOf="@id/Infodetail_headlayout"
+					android:layout_marginLeft="16dp"
+					android:layout_marginRight="16dp"
+					android:layout_marginTop="15dp"
+					android:orientation="vertical"
+					android:background="@drawable/shape_circle_corner">
+
+					<!--所在公司-->
+					<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="48dp"
+						android:id="@+id/fl_Infodetailcompany">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="14sp"
+							android:text="所在公司"
+							android:textColor="@color/text_4e4e4e"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="22dp"
+							android:layout_marginStart="22dp"/>
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:id="@+id/tv_Infodetail_company"
+							android:textSize="@dimen/InfodetailtvSize"
+							android:textColor="#5c5c5c"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="120dp"
+							android:text="@string/Noword"
+							tools:ignore="SmallSp"/>
+
+					</FrameLayout>
+
+
+					<!--职业岗位-->
+					<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="48dp"
+						android:id="@+id/fl_Infodetail_post">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="14sp"
+							android:text="职业岗位"
+							android:textColor="@color/text_4e4e4e"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="22dp"
+							android:layout_marginStart="22dp"/>
+
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/InfodetailtvSize"
+							android:id="@+id/tv_Infodetail_post"
+							android:textColor="#5c5c5c"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="120dp"
+							android:text="@string/Noword"
+							tools:ignore="SmallSp"/>
+					</FrameLayout>
+
+					<!--方向-->
+					<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="48dp"
+						android:id="@+id/fl_Infodetail_direct">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="14sp"
+							android:text="方向"
+							android:textColor="@color/text_4e4e4e"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="22dp"
+							android:layout_marginStart="22dp"/>
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/InfodetailtvSize"
+							android:textColor="#5c5c5c"
+							android:layout_gravity="center_vertical"
+							android:text="@string/Noword"
+							android:layout_marginLeft="120dp"
+							tools:ignore="SmallSp"/>
+
+					</FrameLayout>
+
+					<!--QQ号-->
+					<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="48dp"
+						android:id="@+id/fl_Infodetail_QQ">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="14sp"
+							android:text="QQ号"
+							android:textColor="@color/text_4e4e4e"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="22dp"
+							/>
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/InfodetailtvSize"
+							android:id="@+id/tv_Infodetail_QQ"
+							android:textColor="#5c5c5c"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="120dp"
+							android:text="@string/Noword"
+							/>
+					</FrameLayout>
+
+					<!--微信号-->
+					<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="48dp"
+						android:id="@+id/fl_Infodetail_weixin">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="14sp"
+							android:text="微信号"
+							android:textColor="@color/text_4e4e4e"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="22dp"
+							/>
+
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/InfodetailtvSize"
+							android:id="@+id/tv_Infodetail_weixin"
+							android:textColor="#5c5c5c"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="120dp"
+							android:text="@string/Noword"
+							/>
+					</FrameLayout>
+
+					<!--常用邮箱-->
+					<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="48dp"
+						android:id="@+id/fl_Infodetail_email">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="14sp"
+							android:text="常用邮箱"
+							android:textColor="@color/text_4e4e4e"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="22dp"
+							/>
+
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/InfodetailtvSize"
+							android:id="@+id/tv_Infodetail_email"
+							android:textColor="#5c5c5c"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="120dp"
+							android:text="@string/Noword"
+							/>
+
+					</FrameLayout>
+
+					<!--现居地-->
+					<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="48dp"
+						android:id="@+id/fl_Infodetail_location">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="14sp"
+							android:text="现所在城市"
+							android:textColor="@color/text_4e4e4e"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="22dp"
+							/>
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="@dimen/InfodetailtvSize"
+							android:id="@+id/tv_Infodetail_location"
+							android:textColor="#5c5c5c"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="120dp"
+							android:text="@string/Noword"
+							/>
+
+
+					</FrameLayout>
+
+					<!--个人介绍-->
+					<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="48dp"
+						android:id="@+id/fl_Infodetail_personsign">
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textSize="14sp"
+							android:text="个人介绍"
+							android:textColor="@color/text_4e4e4e"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="22dp"
+							/>
+
+						<TextView
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:id="@+id/tv_Infodetail_personsign"
+							android:textSize="@dimen/InfodetailtvSize"
+							android:textColor="#5c5c5c"
+							android:layout_gravity="center_vertical"
+							android:layout_marginLeft="120dp"
+							android:text="@string/Noword"
+							/>
+					</FrameLayout>
+				</LinearLayout>
+
+				<Button
+					android:id="@+id/change_password_button"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					app:layout_constraintTop_toBottomOf="@id/Infodetail_infolayout"
+					android:background="@drawable/shape_bt_enable"
+					android:layout_marginLeft="68dp"
+					android:layout_marginRight="68dp"
+					android:stateListAnimator="@null"
+					android:text="发送名片交换申请"
+					android:layout_marginTop="22dp"
+					android:textSize="14sp"
+					android:textColor="@color/text_ffffff"/>
+
+				<LinearLayout
+					android:layout_width="match_parent"
+					android:layout_height="30dp"
+					android:background="@color/bg_f6f6f6"
+					android:orientation="vertical"/>
+			</LinearLayout>
+
+
+		</ScrollView>
+
+		<!--</LinearLayout>-->
+
+
+	</LinearLayout>
+</layout>

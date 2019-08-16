@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
+import com.example.matechatting.MyApplication
 import com.example.matechatting.R
 import com.example.matechatting.adapter.PagerAdapter
 import com.example.matechatting.constvalue.ALBUM_REQUEST_CODE
@@ -102,7 +103,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), MainConstValue {
 
     private fun getLoginState() {
         val sp = getSharedPreferences("loginInfo", Context.MODE_PRIVATE)
-        BaseFragment.isLogin = sp.getBoolean("isLogin", true)
+        BaseFragment.isLogin = sp.getBoolean("isLogin", false)
         val account = sp.getString("account", "")
         BaseFragment.account = account ?: ""
     }
@@ -113,11 +114,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), MainConstValue {
             BaseFragment.isLogin = data.getBooleanExtra("isLogin", false)
             val account = data.getStringExtra("account")
             BaseFragment.account = account ?: ""
+            Log.d("aaa","token" + MyApplication.getToken())
         } else if (resultCode == Activity.RESULT_OK && requestCode == ALBUM_REQUEST_CODE && data != null) {
             Log.d("aaa", "onActivityResult" + "调用")
             fragmentList[2].onActivityResult(requestCode, resultCode, data)
         }
-
     }
 
     override fun getLayoutId(): Int {

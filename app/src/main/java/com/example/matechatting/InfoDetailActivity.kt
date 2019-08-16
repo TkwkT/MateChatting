@@ -1,13 +1,16 @@
-package com.example.matechatting.activity
+package com.example.matechatting
 
 import android.os.Build
 import android.os.Bundle
-import com.example.matechatting.R
-import com.example.matechatting.databinding.ActivityHomeSearchBinding
+import android.widget.ImageView
+import com.example.matechatting.activity.BaseActivity
+import com.example.matechatting.databinding.ActivityInfodetailBinding
 import com.example.matechatting.utils.statusbar.StatusBarUtil
 
-class HomeSearchActivity : BaseActivity<ActivityHomeSearchBinding>() {
 
+class InfoDetailActivity : BaseActivity<ActivityInfodetailBinding>() {
+
+    private lateinit var back: ImageView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         StatusBarUtil.setRootViewFitsSystemWindows(this, true)
@@ -15,11 +18,23 @@ class HomeSearchActivity : BaseActivity<ActivityHomeSearchBinding>() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             StatusBarUtil.setStatusBarColor(this, this.getColor(R.color.bg_ffffff))
         }
-        initBinding()
         canSlideFinish(true)
+        initBinding()
+        initView()
     }
 
-    override fun getLayoutId(): Int {
-        return R.layout.activity_home_search
+    private fun initView() {
+        binding.apply {
+            back = icInfodetailBack
+        }
+        back.setOnClickListener{
+            finish()
+        }
     }
+
+
+    override fun getLayoutId(): Int {
+        return R.layout.activity_infodetail
+    }
+
 }

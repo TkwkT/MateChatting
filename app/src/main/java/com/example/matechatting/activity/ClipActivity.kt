@@ -55,7 +55,7 @@ class ClipActivity : AppCompatActivity() {
         this.windowManager.defaultDisplay.getSize(point)
         val width = point.x * (7 / 9f)
         clipView.apply {
-            setBitmapForHeight(path, 1080)
+            setBitmapForHeight(path, 1500)
             radius = width
             maxScale = 3f
             doubleClickScale = 1f

@@ -1,7 +1,6 @@
 package com.example.matechatting.activity
 
 import android.app.Activity
-import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
@@ -14,13 +13,16 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.edit
+import androidx.lifecycle.ViewModelProviders
 import com.example.matechatting.R
 import com.example.matechatting.databinding.ActivityLoginBinding
 import com.example.matechatting.listener.EditTextTextChangeListener
+import com.example.matechatting.repository.LoginState
+import com.example.matechatting.utils.InjectorUtils
+import com.example.matechatting.utils.NetworkState
 import com.example.matechatting.utils.ToastUtil
-import com.example.matechatting.utils.functionutil.LoginState
-import com.example.matechatting.utils.functionutil.LoginUtil
+import com.example.matechatting.utils.isNetworkConnected
+import com.example.matechatting.viewmodel.LoginViewModel
 
 class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     private lateinit var accountEdit: EditText
@@ -31,9 +33,11 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     private lateinit var loginButton: Button
     private lateinit var accountClear: ImageView
     private lateinit var passwordClear: ImageView
-    private lateinit var back:ImageView
+    private lateinit var back: ImageView
     private var accountNotNull = false
     private var passwordNotNull = false
+
+    private lateinit var viewModel: LoginViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         requestWindowFeature(Window.FEATURE_NO_TITLE)
@@ -50,6 +54,8 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
     }
 
     private fun init() {
+        val factory = InjectorUtils.provideLoginViewModelFactory(this)
+        viewModel = ViewModelProviders.of(this, factory).get(LoginViewModel::class.java)
         accountEdit = binding.loginEdittextAccount
         passwordEdit = binding.loginEdittextPassword
         forgetText = binding.loginTextForgetPassword
@@ -61,18 +67,18 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
         back = binding.loginBack
     }
 
-    private fun initForget(){
+    private fun initForget() {
         forgetText.setOnClickListener {
             transferForgetActivity()
         }
     }
 
-    private fun transferForgetActivity(){
+    private fun transferForgetActivity() {
         val intent = Intent(this, ForgetPasswordActivity::class.java)
         startActivity(intent)
     }
 
-    private fun initBack(){
+    private fun initBack() {
         back.setOnClickListener {
             this.finish()
         }
@@ -158,20 +164,19 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
      * 并调用@link [checkAccount] 方法
      */
     private fun initButton() {
-        var account:String
-        var password:String
-        val toast = ToastUtil()
         loginButton.setOnClickListener {
-            toast.setToast(this,"当前网络未连接")
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-//                loginButton.background = this.resources.getDrawable(R.drawable.shape_bt_click, null)
-//            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                loginButton.background = this.resources.getDrawable(R.drawable.shape_bt_click)
-//            }
-//            Log.d("aaa", "aaa")
-//            account = accountEdit.text.toString()
-//            password = passwordEdit.text.toString()
-//            checkAccount(account, password)
+            onLoginButtonClick()
+        }
+    }
+
+    private fun onLoginButtonClick(){
+        val state = isNetworkConnected(this)
+        if (state == NetworkState.NONE){
+            ToastUtil().setToast(this, "当前网络未连接")
+        }else{
+            val account: String = accountEdit.text.toString()
+            val password: String = passwordEdit.text.toString()
+            checkAccount(account, password)
         }
     }
 
@@ -184,41 +189,19 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
      *
      */
     private fun checkAccount(account: String?, password: String?) {
-        LoginUtil.checkAccount(account, password) { state: Int, result: String ->
+        viewModel.checkAccount(account, password) { state: Int ->
+            Log.d("aaa",state.toString())
             when (state) {
                 LoginState.ACCOUNT_NULL -> accountError.text = "请输入账号"
-                LoginState.ACCOUNT_NO -> accountError.text = "当前账号不存在"
-                LoginState.ACCOUNT_ERROR -> accountError.text = "网络未连接，请联网后再试"
+                LoginState.NO_NETWORK -> accountError.text = "网络未连接，请联网后重试"
                 LoginState.PASSWORD_NULL -> passwordError.text = "请输入密码"
-                LoginState.PASSWORD_ERROR -> passwordError.text = "密码错误，请重新输入"
-                LoginState.OK -> onResultOk(result)
+                LoginState.ERROR -> passwordError.text = "账号或密码错误"
+                LoginState.OK -> {
+                    val intent = Intent(this, MainActivity::class.java)
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
             }
-        }
-    }
-
-    /**
-     * 在账号密码验证成功时调用
-     * 此函数会调用@link[saveLoginState] 来将登陆状态保存在@link[SharedPreferences] 中
-     * 并将@link[account] 返回给@link[MainActivity]
-     */
-    private fun onResultOk(account: String) {
-        saveLoginState(account)
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("account", account)
-        setResult(Activity.RESULT_OK, intent)
-//        finish()
-    }
-
-    /**
-     * 用于保存登陆状态
-     * isLogin:Boolean 是否登陆
-     * account：String 登陆的账号
-     */
-    private fun saveLoginState(account: String) {
-        getSharedPreferences("loginInfo", Context.MODE_PRIVATE).edit {
-            putBoolean("isLogin", true)
-            putString("account", account)
-            commit()
         }
     }
 

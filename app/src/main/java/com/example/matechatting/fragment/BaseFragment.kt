@@ -13,7 +13,6 @@ abstract class BaseFragment : Fragment() {
 
     protected fun init() {
         initView()
-//        Log.d("aaa", isLogin.toString())
         if (isLogin) {
             initLogin()
         } else {
@@ -63,7 +62,7 @@ abstract class BaseFragment : Fragment() {
     open fun doOnNetworkNotAvailable() {}
 
     companion object {
-        var isLogin = true
+        var isLogin = false
         var account = ""
     }
 }

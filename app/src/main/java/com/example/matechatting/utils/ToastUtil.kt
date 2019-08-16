@@ -21,15 +21,11 @@ class ToastUtil {
     fun setToast(context: Context,message: String) {
         init(message,context)
         val toast = Toast(context)
-
         val x = DisplayUtils.getScreenWidth(context) / 2 - layout.width
-        Log.d("aaa", "setToast:$x")
         toast.setGravity(Gravity.TOP ,0,0)
         toast.duration = Toast.LENGTH_SHORT
         toast.view = inflater
         toast.show()
-
-//        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun init(message: String,context: Context){

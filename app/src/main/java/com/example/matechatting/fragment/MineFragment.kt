@@ -90,14 +90,6 @@ class MineFragment : PermissionFragment() {
         headImage.setOnClickListener {
             chooseHeadImageUtil.initChooseHeadImageDialog(requireContext(), chooseHeadImageCallback)
         }
-
-        /**
-         * 美工查看用
-         */
-        val intentToLogin = Intent(requireActivity(), LoginActivity::class.java)
-        headLayout.setOnClickListener {
-            transferActivity(intentToLogin, LOGIN_REQUEST_CODE)
-        }
     }
 
     @SuppressLint("InlinedApi")
@@ -115,7 +107,6 @@ class MineFragment : PermissionFragment() {
                 Log.d("bbb", "获得数据：" + uri.path)
                 Glide.with(this).load(uri).into(headImage)
             }
-
         }
     }
 

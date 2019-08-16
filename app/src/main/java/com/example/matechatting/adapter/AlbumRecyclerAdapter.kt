@@ -1,5 +1,6 @@
 package com.example.matechatting.adapter
 
+import android.util.Log
 import com.example.matechatting.R
 import com.example.matechatting.databinding.ItemAlbumImageBinding
 import com.example.matechatting.holder.AlbumHolder
@@ -25,6 +26,7 @@ class AlbumRecyclerAdapter(private val callback: (url: String) -> Unit) :
     }
 
     override fun onBind(holder: AlbumHolder, position: Int) {
+        Log.d("aaa","position ：$position")
         holder.bind(getItem(position))
         holder.getView().setOnClickListener {
             callback(dataList[position])

@@ -8,7 +8,18 @@ const val ALBUM_REQUEST_CODE = 0x111
 const val CLIP_REQUEST_CODE = 0x112
 //登陆界面返回登陆状态的请求码
 const val LOGIN_REQUEST_CODE = 0x120
+//个性标语编辑页返回给我的信息页的请求码
+const val PERSON_SIGN_REQUEST_CODE = 0x130
+//方向选择页返回给我的信息页的请求码
+const val DIRECT_REQUEST_CODE = 0x131
 
+
+//方向Map key：大标签 value：小标签
+val list = hashMapOf<String, List<String>>()
+//大方向的集合，
+val listKey = ArrayList<String>()
+val mapChecked = hashMapOf<String,Boolean>()
+val clicked_names =  ArrayList<String>()
 
 interface MainConstValue {
 

@@ -8,7 +8,7 @@ import com.example.matechatting.bean.AccountBean
 
 @Database(entities = [AccountBean::class],version = 1, exportSchema = false)
 abstract class AppDatabase :RoomDatabase(){
-    abstract fun accountDao():AccountDao
+    abstract fun loginDao():LoginDao
 
     companion object{
         @Volatile private var instance: AppDatabase? = null

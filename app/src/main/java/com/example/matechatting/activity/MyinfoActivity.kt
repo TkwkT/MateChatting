@@ -16,7 +16,10 @@ import android.view.inputmethod.InputMethodManager
 import android.view.View.OnFocusChangeListener
 import android.view.ViewGroup
 import android.widget.ImageView
+import com.example.matechatting.DirectionActivity
 import com.example.matechatting.R
+import com.example.matechatting.constvalue.DIRECT_REQUEST_CODE
+import com.example.matechatting.constvalue.PERSON_SIGN_REQUEST_CODE
 import com.example.matechatting.databinding.ActivityMyInfoBinding
 
 /**
@@ -24,26 +27,26 @@ import com.example.matechatting.databinding.ActivityMyInfoBinding
  */
 class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
     private lateinit var tv_personsign: TextView
-    private lateinit var tv_company: TextView
-    private lateinit var tv_location: TextView
-    private lateinit var tv_post: TextView
-    private lateinit var tv_qq: TextView
-    private lateinit var tv_weixin: TextView
-    private lateinit var tv_email: TextView
-    private lateinit var fl_company: FrameLayout
-    private lateinit var fl_post: FrameLayout
-    private lateinit var fl_direct: FrameLayout
-    private lateinit var fl_qq: FrameLayout
-    private lateinit var fl_weixin: FrameLayout
-    private lateinit var fl_email: FrameLayout
     private lateinit var fl_personsign: FrameLayout
+    private lateinit var tv_company: TextView
+    private lateinit var fl_company: FrameLayout
+    private lateinit var et_company: EditText
+    private lateinit var tv_location: TextView
     private lateinit var fl_location: FrameLayout
     private lateinit var et_location: EditText
+    private lateinit var tv_post: TextView
+    private lateinit var fl_post: FrameLayout
     private lateinit var et_post: EditText
-    private lateinit var et_company: EditText
+    private lateinit var tv_qq: TextView
+    private lateinit var fl_qq: FrameLayout
     private lateinit var et_qq: EditText
+    private lateinit var tv_weixin: TextView
+    private lateinit var fl_weixin: FrameLayout
     private lateinit var et_weixin: EditText
+    private lateinit var tv_email: TextView
+    private lateinit var fl_email: FrameLayout
     private lateinit var etEmail: EditText
+    private lateinit var fl_direct: FrameLayout
     private lateinit var infoBack:ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,7 +112,7 @@ class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
          */
         fl_personsign.setOnClickListener {
             val intent = Intent(this, PersonsignActivity::class.java)
-            startActivityForResult(intent, 1)
+            startActivityForResult(intent, PERSON_SIGN_REQUEST_CODE)
 
         }
         /**
@@ -138,15 +141,21 @@ class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
          */
         setAdapter(etEmail, tv_email, fl_email)
 
+        //跳转方向选择页
+        initFlDirect()
+    }
+
+    private fun initFlDirect(){
+        fl_direct.setOnClickListener {
+            val intent = Intent(this,DirectionActivity::class.java)
+            startActivityForResult(intent, DIRECT_REQUEST_CODE)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-//                var bundle = this.intent.extras
-                val personSign: String? = data?.getStringExtra("personSign")
+        if (resultCode == Activity.RESULT_OK && requestCode == PERSON_SIGN_REQUEST_CODE && data != null) {
+                val personSign: String = data.getStringExtra("personSign")?:"快乐生活每一天"
                 tv_personsign.text = personSign
-            }
         }
     }
 

@@ -53,8 +53,12 @@
 	</style>
 
 	<style name="AccessPermissionDialogDialogAnimation" parent="@android:style/Animation.Dialog">
-		<item name="android:windowEnterAnimation">@anim/access_permission_dialog_in</item>
-		<item name="android:windowExitAnimation">@anim/access_permission_dialog_out</item>
+		<item name="android:windowEnterAnimation">@anim/alpha_out</item>
+		<item name="android:windowExitAnimation">@anim/alpha_in</item>
+	</style>
+
+	<style parent="@android:style/Widget.CompoundButton.CheckBox" name="CustomCheckboxTheme">
+		<item name="android:button">@drawable/shape_direct</item>
 	</style>
 
 

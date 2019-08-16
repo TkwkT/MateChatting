@@ -1,17 +1,22 @@
 package com.example.matechatting.utils
 
+import android.content.Context
+import com.example.matechatting.database.AppDatabase
+import com.example.matechatting.repository.LoginRepository
+import com.example.matechatting.viewmodel.LoginViewModelFactory
+
 object InjectorUtils {
 
-//    fun getClassifyRepository(context: Context): ClassifyRepository {
-//        return ClassifyRepository.getInstance(
-//            AppDatabase.getInstance(context.applicationContext).classifyDao()
-//        )
-//    }
-//
-//    fun provideInformationClassifyViewModelFactory(context: Context): InformationClassifyViewModelFactory {
-//        val repository = getClassifyRepository(context)
-//        return InformationClassifyViewModelFactory(repository)
-//    }
+    fun getLoginRepository(context: Context): LoginRepository {
+        return LoginRepository.getInstance(
+            AppDatabase.getInstance(context.applicationContext).loginDao()
+        )
+    }
+
+    fun provideLoginViewModelFactory(context: Context): LoginViewModelFactory {
+        val repository = getLoginRepository(context)
+        return LoginViewModelFactory(repository)
+    }
 //
 //    fun getDetailRepository(context: Context): DetailRepository {
 //        return DetailRepository.getInstance(
