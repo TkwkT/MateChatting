@@ -51,7 +51,7 @@
 			<TextView
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:text="旧密码"
+				android:text="手机号"
 				android:textSize="14sp"
 				android:textColor="@color/text_4e4e4e"/>
 
@@ -70,6 +70,7 @@
 					android:imeOptions="actionNext"
 					android:textCursorDrawable="@drawable/shape_edittext_cursor"
 					android:hint="请输入您的手机号码"
+					android:maxLength="11"
 					android:textSize="12sp"
 					android:textColor="#929292"
 					android:lines="1"
@@ -136,11 +137,12 @@
 					android:layout_weight="1"
 					android:layout_height="wrap_content"
 					android:background="@null"
-					android:imeOptions="actionNext"
+					android:imeOptions="normal"
 					android:textCursorDrawable="@drawable/shape_edittext_cursor"
 					android:hint="请输入六位数字验证码"
 					android:textSize="12sp"
 					android:textColor="#929292"
+					android:maxLength="6"
 					android:lines="1"
 					android:inputType="phone"/>
 
@@ -161,12 +163,13 @@
 					android:id="@+id/bind_send_message"
 					android:layout_width="87dp"
 					android:layout_height="22dp"
-					android:background="@drawable/shape_circle_coner_line"
+					android:background="@drawable/shape_circle_corner_line"
 					android:text="获取验证码"
 					android:stateListAnimator="@null"
 					android:textColor="@color/text_656bff"
 					android:textSize="9sp"
-					tools:ignore="SmallSp"/>
+					tools:ignore="SmallSp"
+					android:enabled="false"/>
 
 			</LinearLayout>
 

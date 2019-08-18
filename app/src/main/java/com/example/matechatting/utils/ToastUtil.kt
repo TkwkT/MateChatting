@@ -21,7 +21,6 @@ class ToastUtil {
     fun setToast(context: Context,message: String) {
         init(message,context)
         val toast = Toast(context)
-        val x = DisplayUtils.getScreenWidth(context) / 2 - layout.width
         toast.setGravity(Gravity.TOP ,0,0)
         toast.duration = Toast.LENGTH_SHORT
         toast.view = inflater

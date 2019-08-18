@@ -2,9 +2,9 @@ package com.example.matechatting.bean
 import com.google.gson.annotations.SerializedName
 
 
-data class LoginBean(
+data class SPBean(
     @SerializedName("payload")
-    var payload: String,
+    var payload: String = "",
     @SerializedName("success")
     var success: Boolean
 )

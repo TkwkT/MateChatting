@@ -62,7 +62,7 @@ class MineFragment : PermissionFragment() {
     }
 
     private fun transferActivity(intent: Intent, requestCode: Int) {
-        requireActivity().startActivityFromFragment(this, intent, requestCode)
+        requireActivity().startActivityForResult(intent, requestCode)
     }
 
     /**
@@ -73,6 +73,8 @@ class MineFragment : PermissionFragment() {
         changePassword.isEnabled = true
         myInformation.isEnabled = true
         bindPhone.isEnabled = true
+        headLayout.isEnabled = false
+        functionLayout.isEnabled = false
         val intentToChangePassword = Intent(requireActivity(), ChangePasswordActivity::class.java)
         changePassword.setOnClickListener {
             transferActivity(intentToChangePassword, 0x999)
@@ -90,6 +92,10 @@ class MineFragment : PermissionFragment() {
         headImage.setOnClickListener {
             chooseHeadImageUtil.initChooseHeadImageDialog(requireContext(), chooseHeadImageCallback)
         }
+        val intent = Intent(requireActivity(), MyinfoActivity::class.java)
+        headLayout.setOnClickListener {
+            transferActivity(intent, 0x999)
+        }
     }
 
     @SuppressLint("InlinedApi")
@@ -104,7 +110,6 @@ class MineFragment : PermissionFragment() {
         if (resultCode == RESULT_OK && requestCode == ALBUM_REQUEST_CODE && data != null) {
             val uri = data.data
             if (uri != null) {
-                Log.d("bbb", "获得数据：" + uri.path)
                 Glide.with(this).load(uri).into(headImage)
             }
         }
@@ -135,6 +140,8 @@ class MineFragment : PermissionFragment() {
         changePassword.isEnabled = false
         myInformation.isEnabled = false
         bindPhone.isEnabled = false
+        headLayout.isEnabled = true
+        functionLayout.isEnabled = true
         val intent = Intent(requireActivity(), LoginActivity::class.java)
         headLayout.setOnClickListener {
             transferActivity(intent, LOGIN_REQUEST_CODE)

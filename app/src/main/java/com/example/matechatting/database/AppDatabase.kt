@@ -5,10 +5,12 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.matechatting.bean.AccountBean
+import com.example.matechatting.bean.HomeItemBean
 
-@Database(entities = [AccountBean::class],version = 1, exportSchema = false)
+@Database(entities = [AccountBean::class,HomeItemBean::class],version = 1, exportSchema = false)
 abstract class AppDatabase :RoomDatabase(){
     abstract fun loginDao():LoginDao
+    abstract fun homeItemDao():HomeItemDao
 
     companion object{
         @Volatile private var instance: AppDatabase? = null

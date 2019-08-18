@@ -1,13 +1,11 @@
 package com.example.matechatting.fragment
 
 
-import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.SpannableStringBuilder
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,31 +14,44 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-
+import androidx.lifecycle.ViewModelProviders
 import com.example.matechatting.R
 import com.example.matechatting.activity.ForgetPasswordActivity
 import com.example.matechatting.databinding.FragmentFrogetPasswordBinding
 import com.example.matechatting.listener.EditTextTextChangeListener
+import com.example.matechatting.utils.InjectorUtils
+import com.example.matechatting.viewmodel.BindPhoneState
+import com.example.matechatting.viewmodel.BindPhoneState.Companion.CODE_ERROR
+import com.example.matechatting.viewmodel.BindPhoneState.Companion.CODE_NULL
+import com.example.matechatting.viewmodel.BindPhoneState.Companion.ERROR
+import com.example.matechatting.viewmodel.BindPhoneState.Companion.OK
+import com.example.matechatting.viewmodel.BindPhoneState.Companion.PHONE_ERROR
+import com.example.matechatting.viewmodel.BindPhoneState.Companion.PHONE_NULL
+import com.example.matechatting.viewmodel.ForgetPasswordViewModel
 
 class ForgetPasswordFragment : BaseFragment() {
-    private lateinit var binding:FragmentFrogetPasswordBinding
-    private lateinit var back: ImageView
+    private lateinit var binding: FragmentFrogetPasswordBinding
     private lateinit var phoneEdit: EditText
     private lateinit var phoneClear: ImageView
     private lateinit var phoneError: TextView
     private lateinit var codeEdit: EditText
     private lateinit var codeClear: ImageView
-    private lateinit var sendMessage: Button
+    private lateinit var sendButton: Button
     private lateinit var codeError: TextView
     private lateinit var nextButton: Button
     private var phoneNotNull = false
     private var codeNotNull = false
+    private var sendCanClick = false
+    private var isCountdown = false
+    private var isFinish = false
 
+    private lateinit var viewModel: ForgetPasswordViewModel
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_froget_password, container, false)
         init()
+        initViewModel()
         initEditText()
         initSendButton()
         initClear()
@@ -48,6 +59,10 @@ class ForgetPasswordFragment : BaseFragment() {
         return binding.root
     }
 
+    private fun initViewModel() {
+        val factory = InjectorUtils.provideForgetPasswordViewModelFactory(requireContext())
+        viewModel = ViewModelProviders.of(this, factory).get(ForgetPasswordViewModel::class.java)
+    }
 
     /**
      * 初始化视图
@@ -60,7 +75,7 @@ class ForgetPasswordFragment : BaseFragment() {
             codeEdit = forgetCheckCodeEdit
             codeClear = forgetCheckCodeClear
             codeError = forgetCheckCodeError
-            sendMessage = forgetSendMessage
+            sendButton = forgetSendMessage
             nextButton = forgetNextButton
         }
     }
@@ -82,6 +97,11 @@ class ForgetPasswordFragment : BaseFragment() {
                     phoneClear.visibility = View.GONE
                     phoneNotNull = false
                 }
+                sendCanClick = false
+                if (it.length == 11) {
+                    checkPhone(it.toString())
+                }
+                sendButtonCanClick()
                 canClick()
             }, { s: CharSequence, i: Int, i1: Int, i2: Int ->
                 phoneError.text = ""
@@ -91,6 +111,20 @@ class ForgetPasswordFragment : BaseFragment() {
             if (it.isNotEmpty()) {
                 codeClear.visibility = View.VISIBLE
                 codeNotNull = true
+                if (it.length == 6) {
+                    viewModel.checkCode(phoneEdit.text.toString(), codeEdit.text.toString()) { result ->
+                        when (result) {
+                            PHONE_NULL -> phoneError.text = "请先输入手机号"
+                            CODE_NULL -> codeError.text = "请输入验证码"
+                            CODE_ERROR -> codeError.text = "请输入六位数字验证码"
+                            PHONE_ERROR -> phoneError.text = "手机号码输入错误"
+                            ERROR -> codeError.text = "验证错误"
+                            OK -> {
+                                replace()
+                            }
+                        }
+                    }
+                }
             } else {
                 codeClear.visibility = View.GONE
                 codeNotNull = false
@@ -99,6 +133,17 @@ class ForgetPasswordFragment : BaseFragment() {
         }, { s: CharSequence, i: Int, i1: Int, i2: Int ->
             codeError.text = ""
         }))
+    }
+
+    private fun checkPhone(phoneNum: String) {
+        val regexPhone = Regex("^[1]([3-9])[0-9]{9}\$")
+        val resultPhone = regexPhone.find(phoneNum)
+        if (resultPhone == null) {
+            phoneError.text = "手机号码输入错误"
+        } else {
+            sendCanClick = true
+            sendButtonCanClick()
+        }
     }
 
     /**
@@ -124,17 +169,23 @@ class ForgetPasswordFragment : BaseFragment() {
     }
 
     /**
-     * 设置@link[sendMessage] 的点击事件
+     * 设置@link[sendButton] 的点击事件
      * 调用@link[setCountdown] 进行倒计时
      */
     private fun initSendButton() {
-        sendMessage.setOnClickListener {
-            sendMessage.isEnabled = false
-            setCountdown()
+        sendButton.setOnClickListener {
+            viewModel.sendMessage(phoneEdit.text.toString()) {
+                when (it) {
+                    ERROR -> phoneError.text = "当前手机号未绑定账号"
+                    PHONE_ERROR -> phoneError.text = "手机号码输入错误"
+                    OK -> setCountdown()
+                }
+            }
+
         }
     }
 
-    private fun initClear(){
+    private fun initClear() {
         val emptyString = SpannableStringBuilder("")
         phoneClear.setOnClickListener {
             phoneEdit.text = emptyString
@@ -151,27 +202,61 @@ class ForgetPasswordFragment : BaseFragment() {
     private fun setCountdown() {
         object : CountDownTimer(60 * 1000, 1000) {
             override fun onTick(p0: Long) {
+                isCountdown = true
                 val s = p0.toInt() / 1000
                 val str = "$s 秒后可再次发送"
-                sendMessage.text = str
-                Log.d("aaa",s.toString())
+                sendButton.text = str
             }
 
             override fun onFinish() {
-                sendMessage.text = "获取验证码"
-                sendMessage.isEnabled = true
+                sendButton.text = "获取验证码"
+                isCountdown = false
+                if (!isFinish){
+                    sendButtonCanClick()
+                }
             }
         }.start()
+    }
+
+    private fun sendButtonCanClick() {
+        if (sendCanClick && !isCountdown) {
+            sendButton.isEnabled = true
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                sendButton.background = this.resources.getDrawable(R.drawable.shape_circle_corner_line, null)
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                sendButton.background = this.resources.getDrawable(R.drawable.shape_circle_corner_line)
+            }
+        } else {
+            sendButton.isEnabled = false
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                sendButton.background = this.resources.getDrawable(R.drawable.shape_circle_corner_line_disable, null)
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                sendButton.background = this.resources.getDrawable(R.drawable.shape_circle_corner_line_disable)
+            }
+        }
     }
 
     /**
      * 设置@link[nextButton] 的点击事件
      * 未实现
      */
-    private fun initNextButton(){
+    private fun initNextButton() {
         nextButton.setOnClickListener {
-            (requireActivity() as ForgetPasswordActivity).replaceFragment(ResetPasswordFragment(),"重置密码")
+            replace()
         }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        isFinish = true
+        Log.d("aaa","isFinish$isFinish")
+    }
+
+    private fun replace(){
+        Log.d("aaa",this@ForgetPasswordFragment.isDetached.toString())
+        Log.d("aaa","account" + ForgetPasswordActivity.account)
+        Log.d("aaa","token" + ForgetPasswordActivity.token)
+        (requireActivity() as ForgetPasswordActivity).replaceFragment(ResetPasswordFragment(), "重置密码")
     }
 
 }

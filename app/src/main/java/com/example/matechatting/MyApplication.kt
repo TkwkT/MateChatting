@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.core.content.edit
+import com.example.matechatting.fragment.BaseFragment.Companion.account
+import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import io.reactivex.plugins.RxJavaPlugins
 
@@ -11,14 +13,14 @@ import io.reactivex.plugins.RxJavaPlugins
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-//        if (LeakCanary.isInAnalyzerProcess(this)) {
-//            return
-//        }
+        if (LeakCanary.isInAnalyzerProcess(this)) {
+            return
+        }
         RxJavaPlugins.setErrorHandler {
             val message = it.message?:""
             Log.d("aaa",message)
         }
-//        sRefWatcher = LeakCanary.install(this)
+        sRefWatcher = LeakCanary.install(this)
         context = applicationContext
     }
 

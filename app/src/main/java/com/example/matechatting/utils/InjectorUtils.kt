@@ -2,8 +2,8 @@ package com.example.matechatting.utils
 
 import android.content.Context
 import com.example.matechatting.database.AppDatabase
-import com.example.matechatting.repository.LoginRepository
-import com.example.matechatting.viewmodel.LoginViewModelFactory
+import com.example.matechatting.repository.*
+import com.example.matechatting.viewmodel.*
 
 object InjectorUtils {
 
@@ -16,6 +16,40 @@ object InjectorUtils {
     fun provideLoginViewModelFactory(context: Context): LoginViewModelFactory {
         val repository = getLoginRepository(context)
         return LoginViewModelFactory(repository)
+    }
+
+    fun provideBindPhoneViewModelFactory(context: Context): BindPhoneViewModelFactory {
+        return BindPhoneViewModelFactory(BindPhoneRepository())
+    }
+
+    fun provideChangePasswordByTokenViewModelFactory(context: Context): ChangePasswordByTokenViewModelFactory {
+        return ChangePasswordByTokenViewModelFactory(ChangePasswordByTokenRepository())
+    }
+
+    fun provideForgetPasswordViewModelFactory(context: Context): ForgetPasswordViewModelFactory {
+        return ForgetPasswordViewModelFactory(ForgetPasswordRepository())
+    }
+
+    fun provideResetPassViewModelFactory(context: Context): ResetPassViewModelFactory {
+        return ResetPassViewModelFactory(ResetPassRepository())
+    }
+
+    fun provideClipViewModelFactory(context: Context): ClipViewModelFactory {
+        return ClipViewModelFactory(ClipRepository())
+    }
+
+    fun getHomeItemRepository(context: Context): HomeItemRepository {
+        return HomeItemRepository.getInstance(
+            AppDatabase.getInstance(context.applicationContext).homeItemDao()
+        )
+    }
+
+    fun provideHomeItemViewModelFactory(context: Context): HomeItemViewModelFactory {
+        return HomeItemViewModelFactory(getHomeItemRepository(context))
+    }
+
+    fun provideInfoDetailViewModelFactory(context: Context): InfoDetailViewModelFactory {
+        return InfoDetailViewModelFactory(InfoDetailRepository())
     }
 //
 //    fun getDetailRepository(context: Context): DetailRepository {

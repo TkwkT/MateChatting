@@ -13,6 +13,7 @@ abstract class BaseFragment : Fragment() {
 
     protected fun init() {
         initView()
+        Log.d("aaa", "$isLogin")
         if (isLogin) {
             initLogin()
         } else {

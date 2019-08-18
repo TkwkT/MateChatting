@@ -23,14 +23,16 @@ class MileListFragment : BaseFragment() {
     private var changing = false
     private val myOnTouchListener = object : MyOnTouchListener {
         override fun onTouch(isScroll: Boolean) {
-            if (isScroll && !changing) {
-                changing = true
-                sideView.visibility = View.GONE
-//                sideView.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.side_view_gone)
-            } else if (!isScroll) {
-                changing = false
-                sideView.visibility = View.VISIBLE
-                sideView.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.side_view_show)
+            val isLogin = isLogin
+            if (isLogin) {
+                if (isScroll && !changing) {
+                    changing = true
+                    sideView.visibility = View.GONE
+                } else if (!isScroll) {
+                    changing = false
+                    sideView.visibility = View.VISIBLE
+                    sideView.animation = AnimationUtils.loadAnimation(requireContext(), R.anim.side_view_show)
+                }
             }
         }
     }
@@ -43,11 +45,11 @@ class MileListFragment : BaseFragment() {
     }
 
     override fun initLogin() {
-        Log.d("aaa","Login")
+        Log.d("aaa", "Login")
     }
 
     override fun initNotLogin() {
-        Log.d("aaa","noLogin")
+        Log.d("aaa", "noLogin")
     }
 
 

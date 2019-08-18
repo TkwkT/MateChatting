@@ -12,10 +12,14 @@ import android.util.Log
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.ViewModelProviders
 import com.example.matechatting.R
 import com.example.matechatting.fragment.MineFragment
 import com.example.matechatting.myview.CropView
+import com.example.matechatting.utils.InjectorUtils
 import com.example.matechatting.utils.statusbar.StatusBarUtil
+import com.example.matechatting.viewmodel.BindPhoneViewModel
+import com.example.matechatting.viewmodel.ClipViewModel
 import java.io.File
 import java.io.IOException
 import java.io.OutputStream
@@ -24,6 +28,7 @@ class ClipActivity : AppCompatActivity() {
     private lateinit var back: ImageView
     private lateinit var over: TextView
     private lateinit var clipView: CropView
+    private lateinit var viewModel:ClipViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +45,8 @@ class ClipActivity : AppCompatActivity() {
     }
 
     private fun initView() {
+        val factory = InjectorUtils.provideClipViewModelFactory(this)
+        viewModel = ViewModelProviders.of(this, factory).get(ClipViewModel::class.java)
         back = findViewById(R.id.clip_back)
         over = findViewById(R.id.clip_text_over)
         clipView = findViewById(R.id.crop_view)
@@ -76,8 +83,8 @@ class ClipActivity : AppCompatActivity() {
             Log.e("aaa", "zoomedCropBitmap == null")
             return
         }
-
-        val mSaveUri = Uri.fromFile(File(cacheDir, "cropped_" + System.currentTimeMillis() + ".jpg"))
+        val file = File(cacheDir, "cropped_" + System.currentTimeMillis() + ".jpg")
+        val mSaveUri = Uri.fromFile(file)
 
         if (mSaveUri != null) {
             var outputStream: OutputStream? = null
@@ -86,6 +93,7 @@ class ClipActivity : AppCompatActivity() {
                 if (outputStream != null) {
                     zoomedCropBitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
                 }
+                viewModel.postImage(file)
             } catch (ex: IOException) {
                 Log.e("aaa", "Cannot open file: $mSaveUri", ex)
             } finally {

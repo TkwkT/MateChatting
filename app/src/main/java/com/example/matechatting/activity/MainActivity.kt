@@ -13,12 +13,14 @@ import com.example.matechatting.adapter.PagerAdapter
 import com.example.matechatting.constvalue.ALBUM_REQUEST_CODE
 import com.example.matechatting.constvalue.LOGIN_REQUEST_CODE
 import com.example.matechatting.constvalue.MainConstValue
+import com.example.matechatting.constvalue.PAGE
 import com.example.matechatting.databinding.ActivityMainBinding
 import com.example.matechatting.fragment.BaseFragment
 import com.example.matechatting.fragment.HomeFragment
 import com.example.matechatting.fragment.MileListFragment
 import com.example.matechatting.fragment.MineFragment
 import com.example.matechatting.utils.statusbar.StatusBarUtil
+import com.example.matechatting.viewmodel.MainViewModel
 import com.google.android.material.tabs.TabLayout
 
 
@@ -40,6 +42,15 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), MainConstValue {
         init()
         initViewPager()
         initTabLayout()
+        listenNetwork()
+    }
+
+    override fun doOnNetworkAvailable() {
+        super.doOnNetworkAvailable()
+        for (i:Int in 0 until 10){
+            PAGE.add(i)
+        }
+        MainViewModel().getPage()
     }
 
     private fun init() {
@@ -111,12 +122,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), MainConstValue {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK && requestCode == LOGIN_REQUEST_CODE && data != null) {
-            BaseFragment.isLogin = data.getBooleanExtra("isLogin", false)
-            val account = data.getStringExtra("account")
-            BaseFragment.account = account ?: ""
-            Log.d("aaa","token" + MyApplication.getToken())
+            getLoginState()
         } else if (resultCode == Activity.RESULT_OK && requestCode == ALBUM_REQUEST_CODE && data != null) {
-            Log.d("aaa", "onActivityResult" + "调用")
             fragmentList[2].onActivityResult(requestCode, resultCode, data)
         }
     }

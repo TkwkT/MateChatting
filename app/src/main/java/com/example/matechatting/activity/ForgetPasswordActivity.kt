@@ -63,4 +63,9 @@ class ForgetPasswordActivity : BaseActivity<ActivityForgetPasswordBinding>() {
     override fun getLayoutId(): Int {
         return R.layout.activity_forget_password
     }
+
+    companion object{
+        var account = ""
+        var token = ""
+    }
 }

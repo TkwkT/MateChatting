@@ -15,6 +15,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
 import com.example.matechatting.R
+import com.example.matechatting.constvalue.FORGET_REQUEST_CODE
 import com.example.matechatting.databinding.ActivityLoginBinding
 import com.example.matechatting.listener.EditTextTextChangeListener
 import com.example.matechatting.repository.LoginState
@@ -75,7 +76,7 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
 
     private fun transferForgetActivity() {
         val intent = Intent(this, ForgetPasswordActivity::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, FORGET_REQUEST_CODE)
     }
 
     private fun initBack() {
@@ -190,18 +191,26 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>() {
      */
     private fun checkAccount(account: String?, password: String?) {
         viewModel.checkAccount(account, password) { state: Int ->
-            Log.d("aaa",state.toString())
             when (state) {
                 LoginState.ACCOUNT_NULL -> accountError.text = "请输入账号"
                 LoginState.NO_NETWORK -> accountError.text = "网络未连接，请联网后重试"
                 LoginState.PASSWORD_NULL -> passwordError.text = "请输入密码"
                 LoginState.ERROR -> passwordError.text = "账号或密码错误"
                 LoginState.OK -> {
+                    Log.d("aaa","OK")
                     val intent = Intent(this, MainActivity::class.java)
                     setResult(Activity.RESULT_OK, intent)
                     finish()
                 }
             }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK && requestCode == FORGET_REQUEST_CODE && data != null){
+            val account = data.getStringExtra("account")?:""
+            accountEdit.text = SpannableStringBuilder(account)
         }
     }
 

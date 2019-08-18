@@ -11,11 +11,14 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.ViewModelProviders
 import com.example.matechatting.R
 import com.example.matechatting.listener.NetworkConnectChangeReceiver
 import com.example.matechatting.myview.SlideFinishLayout
+import com.example.matechatting.utils.InjectorUtils
 import com.example.matechatting.utils.NetworkState
 import com.example.matechatting.utils.isNetworkConnected
+import com.example.matechatting.viewmodel.LoginViewModel
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     protected lateinit var binding: T
@@ -54,6 +57,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     protected fun initBinding(){
         //初始化DataBinding
         binding = DataBindingUtil.setContentView(this, getLayoutId())
+
     }
 
     //获取子Activity的Layout
@@ -136,7 +140,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     }
 
 
-    private fun listenNetwork() {
+    protected fun listenNetwork() {
         val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             connectivityManager.registerDefaultNetworkCallback(object : ConnectivityManager.NetworkCallback() {

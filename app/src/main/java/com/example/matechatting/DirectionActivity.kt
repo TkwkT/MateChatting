@@ -165,6 +165,8 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
         initdirect(list, "其他", dir_qita)
 
         for (key in list.keys) {
+
+            if(key !in listKey)
             listKey.add(key)
 //            Log.e("this","key = $key ,value = ${list.get(key)}")
         }
@@ -211,11 +213,11 @@ class DirectionActivity : BaseActivity<ActivityDirectionBinding>() {
         /**
          * 初始化key的list
          */
-        val it = list.keys.iterator()
-        while (it.hasNext()) {
-            val key = it.next().toString()
-            listKey.add(key)
-        }
+//        val it = list.keys.iterator()
+//        while (it.hasNext()) {
+//            val key = it.next().toString()
+//            listKey.add(key)
+//        }
 
         /**
          * 初始化fragment

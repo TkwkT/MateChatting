@@ -11,16 +11,26 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.lifecycle.ViewModelProviders
 import com.example.matechatting.R
 import com.example.matechatting.databinding.ActivityChangePasswordBinding
+import com.example.matechatting.fragment.BaseFragment.Companion.account
 import com.example.matechatting.listener.EditTextTextChangeListener
-import com.example.matechatting.utils.functionutil.ChangePasswordState.Companion.NEW_ERROR
-import com.example.matechatting.utils.functionutil.ChangePasswordState.Companion.NEW_NO6
-import com.example.matechatting.utils.functionutil.ChangePasswordState.Companion.NEW_NULL
-import com.example.matechatting.utils.functionutil.ChangePasswordState.Companion.NEW_OK
-import com.example.matechatting.utils.functionutil.ChangePasswordState.Companion.NEW_TOO_LONG
-import com.example.matechatting.utils.functionutil.ChangePasswordUtil
+import com.example.matechatting.utils.InjectorUtils
+import com.example.matechatting.utils.functionutil.OKDialogUtil
 import com.example.matechatting.utils.statusbar.StatusBarUtil
+import com.example.matechatting.viewmodel.BindPhoneViewModel
+import com.example.matechatting.viewmodel.ChangePasswordByTokenViewModel
+import com.example.matechatting.viewmodel.ChangePasswordState.Companion.AGAIN_ERROR
+import com.example.matechatting.viewmodel.ChangePasswordState.Companion.AGAIN_NULL
+import com.example.matechatting.viewmodel.ChangePasswordState.Companion.ERROR
+import com.example.matechatting.viewmodel.ChangePasswordState.Companion.NEW_ERROR
+import com.example.matechatting.viewmodel.ChangePasswordState.Companion.NEW_NO6
+import com.example.matechatting.viewmodel.ChangePasswordState.Companion.NEW_NULL
+import com.example.matechatting.viewmodel.ChangePasswordState.Companion.NEW_OK
+import com.example.matechatting.viewmodel.ChangePasswordState.Companion.NEW_TOO_LONG
+import com.example.matechatting.viewmodel.ChangePasswordState.Companion.OK
+import com.example.matechatting.viewmodel.ChangePasswordState.Companion.OLD_NULL
 
 /**
  * 未完成
@@ -41,18 +51,18 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
     private lateinit var againError: TextView
     private lateinit var againClear: ImageView
     private lateinit var overButton: Button
-    private lateinit var back:ImageView
+    private lateinit var back: ImageView
+
+    private lateinit var viewModel: ChangePasswordByTokenViewModel
     private var oldNotNull = false
     private var newNotNull = false
     private var againNotNull = false
     private var oldCanSee = false
     private var newCanSee = false
     private var againCanSee = false
-    private var account = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        account = intent.getStringExtra("account")?:"null"
         initBinding()
         StatusBarUtil.setRootViewFitsSystemWindows(this, true)
         StatusBarUtil.setStatusBarDarkTheme(this, true)
@@ -60,12 +70,18 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
             StatusBarUtil.setStatusBarColor(this, this.getColor(R.color.bg_ffffff))
         }
         canSlideFinish(true)
+        init()
         initView()
         initEditText()
         initCanSeePasswordListener()
         initClear()
         initButton()
         initBack()
+    }
+
+    private fun init() {
+        val factory = InjectorUtils.provideChangePasswordByTokenViewModelFactory(this)
+        viewModel = ViewModelProviders.of(this, factory).get(ChangePasswordByTokenViewModel::class.java)
     }
 
     /**
@@ -86,10 +102,11 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
             againError = changePasswordAgainError
             againClear = changePasswordAgainClear
             overButton = changePasswordButton
-            back =  changePasswordBack
+            back = changePasswordBack
         }
     }
-    private fun initBack(){
+
+    private fun initBack() {
         back.setOnClickListener {
             this.finish()
         }
@@ -125,7 +142,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
                 newNotNull = true
             }
             canClick()
-            ChangePasswordUtil.checkNewPassword(it.toString()) { state ->
+            viewModel.checkNewPassword(it.toString()) { state ->
                 changeNewError(state)
             }
         }, { s: CharSequence, i: Int, i1: Int, i2: Int ->
@@ -205,22 +222,36 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
      * 再次判断各个输入是否符合规范
      */
     private fun initButton() {
-        var old:String
-        var new:String
-        var again:String
+        var old: String
+        var new: String
+        var again: String
         overButton.setOnClickListener {
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //                overButton.background = this.resources.getDrawable(R.drawable.shape_bt_click, null)
 //            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
 //                overButton.background = this.resources.getDrawable(R.drawable.shape_bt_click)
 //            }
-            Log.d("aaa", "aaa")
             old = oldEdit.text.toString()
             new = newEdit.text.toString()
             again = againEdit.text.toString()
-            ChangePasswordUtil.checkChangePassword(account,old,new,again){
-
+            viewModel.checkChangePassword(old, new, again) {
+                when (it) {
+                    NEW_NO6, NEW_ERROR, NEW_NULL, NEW_TOO_LONG -> changeNewError(it)
+                    OLD_NULL -> oldError.text = "请输入旧密码"
+                    AGAIN_NULL -> againError.text = "请再次输入密码"
+                    AGAIN_ERROR -> againError.text = "两次密码不同,请再次输入"
+                    ERROR -> oldError.text = "密码错误,请重新输入"
+                    OK ->{
+                        showDialog()
+                    }
+                }
             }
+        }
+    }
+
+    private fun showDialog(){
+        OKDialogUtil().initOKDialog(this,"修改成功"){
+            finish()
         }
     }
 
@@ -248,7 +279,7 @@ class ChangePasswordActivity : BaseActivity<ActivityChangePasswordBinding>() {
         when (state) {
             NEW_NO6 -> newError.text = "至少6位密码"
             NEW_ERROR -> newError.text = "需包含数字，字母，符号中至少2种元素"
-            NEW_NULL -> newError.text = "密码不能为空"
+            NEW_NULL -> newError.text = "请输入新密码"
             NEW_TOO_LONG -> newError.text = "至多十六位"
             NEW_OK -> newError.text = ""
         }

@@ -12,7 +12,13 @@ const val LOGIN_REQUEST_CODE = 0x120
 const val PERSON_SIGN_REQUEST_CODE = 0x130
 //方向选择页返回给我的信息页的请求码
 const val DIRECT_REQUEST_CODE = 0x131
+//从忘记密码页返回登陆页的请求码
+const val FORGET_REQUEST_CODE = 0X132
 
+const val BASE_URL = "http://maaf28.natappfree.cc"
+const val PATH = "/static/"
+
+var PAGE = ArrayList<Int>()
 
 //方向Map key：大标签 value：小标签
 val list = hashMapOf<String, List<String>>()

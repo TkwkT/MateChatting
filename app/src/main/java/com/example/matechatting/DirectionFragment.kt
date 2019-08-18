@@ -54,8 +54,8 @@ class DirectionFragment : Fragment() {
             val iterator = values.iterator()
             while (iterator.hasNext()) {
                 val value = iterator.next()
-                for (i in 0 until value.size - 1)
-                    mapChecked.put(value.get(i), false)
+                for (i in 0 until value.size)
+                    mapChecked[value[i]] = false
             }
         }
     }

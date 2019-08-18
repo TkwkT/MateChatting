@@ -6,6 +6,7 @@ import com.example.matechatting.utils.TokenInterceptor
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.Cache
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -43,20 +44,33 @@ object RetrofitUtil {
             .writeTimeout(defaultTimeout, TimeUnit.SECONDS)
             .addInterceptor(loggingInterceptor)
             .cache(cache)
-        if (needToken){
+        if (needToken) {
             builder.addInterceptor(TokenInterceptor())
         }
         return builder
     }
 
-    fun getRetrofitBuilder(baseUrl: String,needToken: Boolean): Retrofit.Builder {
+    fun getRetrofitBuilder(
+        baseUrl: String,
+        needToken: Boolean,
+        tokenInterceptor: Interceptor? = null
+    ): Retrofit.Builder {
         val gson = GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").serializeNulls().create()
-        val okHttpClient = RetrofitUtil.getOkHttpClientBuilder(needToken).build()
+        val builder = getOkHttpClientBuilder(needToken)
+
+        if (tokenInterceptor != null) {
+            Log.d("aaa","拦截器添加成功")
+            Log.d("aaa",tokenInterceptor.toString())
+            builder.addInterceptor(tokenInterceptor)
+        }
+        val okHttpClient = builder.build()
+
         return Retrofit.Builder()
             .client(okHttpClient)
             .addConverterFactory(GsonConverterFactory.create(gson))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .baseUrl(baseUrl)
     }
+
 
 }

@@ -1,18 +1,16 @@
 package com.example.matechatting.repository
 
-import android.util.Log
 import com.example.matechatting.MyApplication
 import com.example.matechatting.bean.AccountBean
 import com.example.matechatting.database.LoginDao
 import com.example.matechatting.network.IdeaApi
 import com.example.matechatting.network.LoginService
+import com.example.matechatting.repository.LoginState.Companion.ERROR
 import com.example.matechatting.repository.LoginState.Companion.NO_NETWORK
 import com.example.matechatting.repository.LoginState.Companion.OK
-import com.example.matechatting.repository.LoginState.Companion.ERROR
 import com.example.matechatting.utils.runOnNewThread
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import java.lang.Exception
 
 class LoginRepository(private val accountDao: LoginDao) : BaseRepository {
 
@@ -38,10 +36,9 @@ class LoginRepository(private val accountDao: LoginDao) : BaseRepository {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 val token = it.payload
-                Log.d("aaa", token)
-                callback(OK)
                 saveState(account, token)
                 saveInDB(account, password, token)
+                callback(OK)
             },{
                 callback(ERROR)
             })
