@@ -8,5 +8,6 @@ data class AccountBean(
     @PrimaryKey
     val account:String,
     val password:String,
-    val token:String
+    val token:String,
+    val login:Boolean
 )

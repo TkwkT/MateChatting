@@ -205,8 +205,8 @@ class SideView : View {
                 'A', 'B', 'C', 'D', 'E', 'F', 'G',
                 'H', 'I', 'J', 'K', 'L', 'M', 'N',
                 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
-                'V', 'W', 'X', 'Y', 'Z', 35.toChar()
-            )
+                'V', 'W', 'X', 'Y', 'Z')
+//            , 35.toChar()
         )
 
         interface OnTouchingLetterChangedListener {

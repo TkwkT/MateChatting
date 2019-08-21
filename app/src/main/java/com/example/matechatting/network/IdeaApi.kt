@@ -1,6 +1,6 @@
 package com.example.matechatting.network
 
-import com.example.matechatting.constvalue.BASE_URL
+import com.example.matechatting.BASE_URL
 import okhttp3.Interceptor
 
 

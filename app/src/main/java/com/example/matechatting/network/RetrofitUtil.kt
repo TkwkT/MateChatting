@@ -2,7 +2,6 @@ package com.example.matechatting.network
 
 import android.util.Log
 import com.example.matechatting.MyApplication
-import com.example.matechatting.utils.TokenInterceptor
 import com.google.gson.GsonBuilder
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import okhttp3.Cache

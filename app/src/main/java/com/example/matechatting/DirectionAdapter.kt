@@ -6,9 +6,6 @@ import android.view.ViewGroup
 import android.widget.CheckBox
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.matechatting.constvalue.clicked_names
-
-import com.example.matechatting.constvalue.mapChecked
 
 class DirectionAdapter(private val lists: List<String>) :
     RecyclerView.Adapter<DirectionAdapter.ViewHolder>() {
@@ -45,7 +42,7 @@ class DirectionAdapter(private val lists: List<String>) :
          * 当用户选中大于等于三个时，除了选中的之外其他都不能点击
          */
         if (clicked_names.size >= 3 || clicked_names.size < 0) {
-            if (name in clicked_names ) {
+            if (name in clicked_names) {
                 holder.checkBox.isEnabled = true
             } else holder.checkBox.isEnabled = false
         }else{

@@ -8,12 +8,12 @@ import android.view.*
 import android.widget.LinearLayout
 import androidx.databinding.ViewDataBinding
 import androidx.viewpager.widget.ViewPager
-import com.example.matechatting.activity.BaseActivity
+import com.example.matechatting.base.BaseActivity
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.math.abs
 
-class SlideFinishLayout<T:ViewDataBinding> : LinearLayout {
+class SlideFinishLayout<T : ViewDataBinding> : LinearLayout {
 
     private var mTouchSlop: Int = 0//系统默认的滑动事件触发距离
     private var startX = 0
@@ -26,6 +26,8 @@ class SlideFinishLayout<T:ViewDataBinding> : LinearLayout {
     private var mIgnoredViews = ArrayList<View>()//滑动忽略控件列表
     private var mViewPagers = LinkedList<ViewPager>()//该控件子控件中包含ViewPager的集合
     private var activity: BaseActivity<T>? = null//所有activity的基类
+    private var needDoOther = false
+    private var doOther: () -> Unit = {}
 
     constructor(context: Context) : super(context) {
         init(context)
@@ -48,9 +50,10 @@ class SlideFinishLayout<T:ViewDataBinding> : LinearLayout {
     }
 
     //和activity绑定
-    fun attachToActivity(activity: BaseActivity<T>) {
+    fun attachToActivity(activity: BaseActivity<T>, needDoOther: Boolean = false, callback: () -> Unit = {}) {
         this.activity = activity
-
+        this.needDoOther = needDoOther
+        this.doOther = callback
         //将activity视图中的所有控件添加到这个控件中
         val decor = activity.window.decorView as ViewGroup
         val decorChild = decor.getChildAt(0) as ViewGroup
@@ -137,7 +140,11 @@ class SlideFinishLayout<T:ViewDataBinding> : LinearLayout {
                     && moveDistanceX > 2 * abs(moveDistanceY)
                     && getScrollVelocity() > XSPEED_MIN
                 ) {
-                    activity!!.finish()
+                    if (needDoOther) {
+                        doOther()
+                    } else {
+                        activity!!.finish()
+                    }
                     return true
                 }
                 moveDistanceX = 0

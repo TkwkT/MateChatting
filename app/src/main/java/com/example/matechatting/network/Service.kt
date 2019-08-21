@@ -1,6 +1,7 @@
 package com.example.matechatting.network
 
 import com.example.matechatting.bean.*
+import com.example.matechatting.function.home.HomeItemBean
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import retrofit2.http.*
@@ -14,7 +15,7 @@ interface LoginService {
      */
     @FormUrlEncoded
     @POST("user/log_in")
-    fun getLoginAndGetToken(@Field("stu_id") stuId: String, @Field("password") password: String): Observable<SPBean>
+    fun getLoginAndGetToken(@Field("stu_id") stuId: String, @Field("password") password: String): Observable<SPLoginBean>
 }
 
 interface SendMessageService {
@@ -79,28 +80,38 @@ interface PostImageService {
      */
     @Multipart
     @POST("/user/upload_profile_photo")
-    fun postImage(@Part file: MultipartBody.Part):Observable<SBean>
+    fun postImage(@Part file: MultipartBody.Part): Observable<SBean>
 }
 
-interface GetHomeItemService{
+interface GetHomeItemService {
     /**
      * 获取首页用户列表
      */
     @FormUrlEncoded
     @POST("/get_users")
-    fun getHomeItem(@Field("start")start:Int):Observable<List<HomeItemBean>>
+    fun getHomeItem(@Field("start") start: Int): Observable<List<HomeItemBean>>
 }
 
-interface GetHomeItemPageService{
+interface GetHomeItemPageService {
     /**
      * 获取服务器首页总页数
      */
     @POST("/get_page")
-    fun getPage():Observable<IBean>
+    fun getPage(): Observable<IBean>
 }
 
-interface GetUserById{
+interface GetUserByIdService {
     @FormUrlEncoded
     @POST("/user/get_user_by_id")
-    fun getUser(@Field("id")id:Int):Observable<UserBean>
+    fun getUser(@Field("id") id: Int): Observable<UserBean>
+}
+
+interface GetMineService {
+    @POST("/user/get_user_by_token")
+    fun getMine(): Observable<MineBean>
+}
+
+interface GetMyInfoService {
+    @POST("/user/get_user_by_token")
+    fun getMyInfo(): Observable<UserBean>
 }

@@ -7,9 +7,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.matechatting.activity.BaseActivity
-import com.example.matechatting.constvalue.list
-import com.example.matechatting.constvalue.listKey
+import com.example.matechatting.base.BaseActivity
 import com.example.matechatting.databinding.ActivityDirectionBinding
 
 import com.example.matechatting.utils.statusbar.StatusBarUtil

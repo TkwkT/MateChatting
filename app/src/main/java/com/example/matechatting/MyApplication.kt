@@ -1,16 +1,17 @@
 package com.example.matechatting
 
-import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.core.content.edit
-import com.example.matechatting.fragment.BaseFragment.Companion.account
+import androidx.multidex.MultiDex
+import androidx.multidex.MultiDexApplication
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import io.reactivex.plugins.RxJavaPlugins
 
 
-class MyApplication : Application() {
+class MyApplication : MultiDexApplication() {
+
     override fun onCreate() {
         super.onCreate()
         if (LeakCanary.isInAnalyzerProcess(this)) {
@@ -20,7 +21,7 @@ class MyApplication : Application() {
             val message = it.message?:""
             Log.d("aaa",message)
         }
-        sRefWatcher = LeakCanary.install(this)
+//        sRefWatcher = LeakCanary.install(this)
         context = applicationContext
     }
 

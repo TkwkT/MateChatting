@@ -11,8 +11,6 @@ import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.matechatting.constvalue.list
-import com.example.matechatting.constvalue.mapChecked
 import com.example.matechatting.databinding.FragmentDirectionBinding
 
 

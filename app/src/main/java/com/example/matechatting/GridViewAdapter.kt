@@ -8,9 +8,6 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
-import com.example.matechatting.constvalue.clicked_names
-
-import com.example.matechatting.constvalue.listKey
 
 class GridViewAdapter(
     private val list: List<String>,

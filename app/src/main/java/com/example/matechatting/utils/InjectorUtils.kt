@@ -1,9 +1,28 @@
 package com.example.matechatting.utils
 
 import android.content.Context
-import com.example.matechatting.database.AppDatabase
-import com.example.matechatting.repository.*
-import com.example.matechatting.viewmodel.*
+import com.example.matechatting.AppDatabase
+import com.example.matechatting.function.bindphone.BindPhoneRepository
+import com.example.matechatting.function.bindphone.BindPhoneViewModelFactory
+import com.example.matechatting.function.changepassword.ChangePasswordByTokenRepository
+import com.example.matechatting.function.changepassword.ChangePasswordByTokenViewModelFactory
+import com.example.matechatting.function.cliphead.ClipRepository
+import com.example.matechatting.function.cliphead.ClipViewModelFactory
+import com.example.matechatting.function.forgetpassword.ForgetPasswordRepository
+import com.example.matechatting.function.forgetpassword.ForgetPasswordViewModelFactory
+import com.example.matechatting.function.forgetpassword.ResetPassRepository
+import com.example.matechatting.function.forgetpassword.ResetPassViewModelFactory
+import com.example.matechatting.function.home.HomeItemRepository
+import com.example.matechatting.function.home.HomeItemViewModelFactory
+import com.example.matechatting.function.infodetail.InfoDetailRepository
+import com.example.matechatting.function.infodetail.InfoDetailViewModelFactory
+import com.example.matechatting.function.login.LoginRepository
+import com.example.matechatting.function.login.LoginViewModelFactory
+import com.example.matechatting.function.mine.MineRepository
+import com.example.matechatting.function.mine.MineViewModelFactory
+import com.example.matechatting.function.myinfo.MyInfoRepository
+import com.example.matechatting.function.myinfo.MyInfoViewModelFactory
+import com.example.matechatting.otherprocess.repository.AccountRepository
 
 object InjectorUtils {
 
@@ -23,7 +42,9 @@ object InjectorUtils {
     }
 
     fun provideChangePasswordByTokenViewModelFactory(context: Context): ChangePasswordByTokenViewModelFactory {
-        return ChangePasswordByTokenViewModelFactory(ChangePasswordByTokenRepository())
+        return ChangePasswordByTokenViewModelFactory(
+            ChangePasswordByTokenRepository()
+        )
     }
 
     fun provideForgetPasswordViewModelFactory(context: Context): ForgetPasswordViewModelFactory {
@@ -51,6 +72,22 @@ object InjectorUtils {
     fun provideInfoDetailViewModelFactory(context: Context): InfoDetailViewModelFactory {
         return InfoDetailViewModelFactory(InfoDetailRepository())
     }
+
+    fun provideMineViewModelFactory(context: Context): MineViewModelFactory {
+        return MineViewModelFactory(MineRepository())
+    }
+
+    fun getAccountRepository(context: Context): AccountRepository {
+        return AccountRepository.getInstance(
+            AppDatabase.getInstance(context.applicationContext).loginDao()
+        )
+    }
+
+    fun provideMyInfoViewModelFactory(context: Context): MyInfoViewModelFactory {
+        return MyInfoViewModelFactory(MyInfoRepository())
+    }
+
+
 //
 //    fun getDetailRepository(context: Context): DetailRepository {
 //        return DetailRepository.getInstance(

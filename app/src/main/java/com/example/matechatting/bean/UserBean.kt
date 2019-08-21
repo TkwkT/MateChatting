@@ -33,7 +33,7 @@ data class UserBean(
     var stuId: String,
     @SerializedName("wechat_account")
     var wechatAccount: String
-){
+):BaseBean(){
     var graduation = ""
     var direction = ""
 }
