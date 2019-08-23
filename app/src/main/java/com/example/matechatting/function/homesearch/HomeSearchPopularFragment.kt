@@ -26,13 +26,15 @@ class HomeSearchPopularFragment : Fragment() {
 
     private fun initFlowLayout() {
         val array = labelArray
-        for (s: String in array) {
+        for ((i, s: String) in array.withIndex()) {
             val view = LayoutInflater.from(requireContext()).inflate(R.layout.item_search_label, null)
             val layout = view.findViewById<FrameLayout>(R.id.item_search_layout)
             val textView = view.findViewById<TextView>(R.id.item_search_text)
             textView.text = s
             layout.setOnClickListener {
-                Log.d("aaa", "initFlowLayout :" + layout.item_search_text.text)
+                val activity = (requireActivity() as HomeSearchActivity)
+                activity.key = labelArray[i]
+                activity.getData()
             }
             flowLayout.addView(view)
         }

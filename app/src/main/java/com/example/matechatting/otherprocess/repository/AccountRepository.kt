@@ -1,6 +1,6 @@
 package com.example.matechatting.otherprocess.repository
 
-import com.example.matechatting.function.login.LoginDao
+import com.example.matechatting.database.LoginDao
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 

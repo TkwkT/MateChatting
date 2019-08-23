@@ -1,7 +1,7 @@
 package com.example.matechatting.network
 
 import com.example.matechatting.bean.*
-import com.example.matechatting.function.home.HomeItemBean
+import com.example.matechatting.bean.HomeItemBean
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import retrofit2.http.*
@@ -114,4 +114,10 @@ interface GetMineService {
 interface GetMyInfoService {
     @POST("/user/get_user_by_token")
     fun getMyInfo(): Observable<UserBean>
+}
+
+interface SearchService {
+    @FormUrlEncoded
+    @POST("/get_user_by_key")
+    fun getResult(@Field("key") key: String, @Field("page") page: Int, @Field("size") size: Int = 20): Observable<SearchBean>
 }

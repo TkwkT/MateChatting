@@ -1,4 +1,4 @@
-package com.example.matechatting.function.home
+package com.example.matechatting.bean
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
@@ -32,6 +32,6 @@ data class HomeItemBean(
     var direction: String = ""
     @ColumnInfo(name = "graduation")
     var graduation: String = ""
-
+//
 //    constructor():this("",null,0,0,"","","")
 }

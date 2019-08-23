@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 
 import java.util.ArrayList
+import kotlin.math.max
 
 class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet? = null, defStyle: Int = 0) :
     ViewGroup(context, attrs, defStyle) {
@@ -21,10 +22,10 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
 
-        val sizeWidth = View.MeasureSpec.getSize(widthMeasureSpec)
-        val modeWidth = View.MeasureSpec.getMode(widthMeasureSpec)
-        val sizeHeight = View.MeasureSpec.getSize(heightMeasureSpec)
-        val modeHeight = View.MeasureSpec.getMode(heightMeasureSpec)
+        val sizeWidth = MeasureSpec.getSize(widthMeasureSpec)
+        val modeWidth = MeasureSpec.getMode(widthMeasureSpec)
+        val sizeHeight = MeasureSpec.getSize(heightMeasureSpec)
+        val modeHeight = MeasureSpec.getMode(heightMeasureSpec)
 
         // 如果是warp_content情况下，记录宽和高
         var width = 0
@@ -44,7 +45,7 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
             measureChild(child, widthMeasureSpec, heightMeasureSpec)
             // 得到LayoutParams
             val lp = child
-                .layoutParams as ViewGroup.MarginLayoutParams
+                .layoutParams as MarginLayoutParams
 
             // 子View占据的宽度
             val childWidth = (child.measuredWidth + lp.leftMargin
@@ -56,7 +57,7 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
             // 换行 判断 当前的宽度大于 开辟新行
             if (lineWidth + childWidth > sizeWidth - paddingLeft - paddingRight) {
                 // 对比得到最大的宽度
-                width = Math.max(width, lineWidth)
+                width = max(width, lineWidth)
                 // 重置lineWidth
                 lineWidth = childWidth
                 // 记录行高
@@ -68,17 +69,17 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
                 // 叠加行宽
                 lineWidth += childWidth
                 // 得到当前行最大的高度
-                lineHeight = Math.max(lineHeight, childHeight)
+                lineHeight = max(lineHeight, childHeight)
             }
             // 特殊情况,最后一个控件
             if (i == cCount - 1) {
-                width = Math.max(lineWidth, width)
+                width = max(lineWidth, width)
                 height += lineHeight
             }
         }
         setMeasuredDimension(
-            if (modeWidth == View.MeasureSpec.EXACTLY) sizeWidth else width + paddingLeft + paddingRight,
-            if (modeHeight == View.MeasureSpec.EXACTLY) sizeHeight else height + paddingTop + paddingBottom//
+            if (modeWidth == MeasureSpec.EXACTLY) sizeWidth else width + paddingLeft + paddingRight,
+            if (modeHeight == MeasureSpec.EXACTLY) sizeHeight else height + paddingTop + paddingBottom//
         )
 
     }
@@ -101,7 +102,7 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
         for (i in 0 until cCount) {
             val child = getChildAt(i)
             val lp = child
-                .layoutParams as ViewGroup.MarginLayoutParams
+                .layoutParams as MarginLayoutParams
 
             val childWidth = child.measuredWidth
             val childHeight = child.measuredHeight
@@ -120,7 +121,7 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
                 lineViews = ArrayList()
             }
             lineWidth += childWidth + lp.leftMargin + lp.rightMargin
-            lineHeight = Math.max(
+            lineHeight = max(
                 lineHeight, childHeight + lp.topMargin
                         + lp.bottomMargin
             )
@@ -152,7 +153,7 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
                 }
 
                 val lp = child
-                    .layoutParams as ViewGroup.MarginLayoutParams
+                    .layoutParams as MarginLayoutParams
 
                 val lc = left + lp.leftMargin
                 val tc = top + lp.topMargin
@@ -174,10 +175,8 @@ class FlowLayout @JvmOverloads constructor(context: Context, attrs: AttributeSet
     /**
      * 与当前ViewGroup对应的LayoutParams
      */
-    override fun generateLayoutParams(attrs: AttributeSet): ViewGroup.LayoutParams {
-        return ViewGroup.MarginLayoutParams(context, attrs)
+    override fun generateLayoutParams(attrs: AttributeSet): LayoutParams {
+        return MarginLayoutParams(context, attrs)
     }
-
-
 }
 

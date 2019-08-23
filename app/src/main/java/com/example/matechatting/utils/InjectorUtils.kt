@@ -1,7 +1,7 @@
 package com.example.matechatting.utils
 
 import android.content.Context
-import com.example.matechatting.AppDatabase
+import com.example.matechatting.database.AppDatabase
 import com.example.matechatting.function.bindphone.BindPhoneRepository
 import com.example.matechatting.function.bindphone.BindPhoneViewModelFactory
 import com.example.matechatting.function.changepassword.ChangePasswordByTokenRepository
@@ -14,6 +14,8 @@ import com.example.matechatting.function.forgetpassword.ResetPassRepository
 import com.example.matechatting.function.forgetpassword.ResetPassViewModelFactory
 import com.example.matechatting.function.home.HomeItemRepository
 import com.example.matechatting.function.home.HomeItemViewModelFactory
+import com.example.matechatting.function.homesearch.HomeSearchRepository
+import com.example.matechatting.function.homesearch.HomeSearchViewModelFactory
 import com.example.matechatting.function.infodetail.InfoDetailRepository
 import com.example.matechatting.function.infodetail.InfoDetailViewModelFactory
 import com.example.matechatting.function.login.LoginRepository
@@ -85,6 +87,10 @@ object InjectorUtils {
 
     fun provideMyInfoViewModelFactory(context: Context): MyInfoViewModelFactory {
         return MyInfoViewModelFactory(MyInfoRepository())
+    }
+
+    fun provideHomeSearchViewModelFactory(context: Context): HomeSearchViewModelFactory {
+        return HomeSearchViewModelFactory(HomeSearchRepository())
     }
 
 

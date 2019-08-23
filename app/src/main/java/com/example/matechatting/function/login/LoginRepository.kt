@@ -4,6 +4,7 @@ import android.util.Log
 import com.example.matechatting.MyApplication
 import com.example.matechatting.base.BaseRepository
 import com.example.matechatting.bean.AccountBean
+import com.example.matechatting.database.LoginDao
 import com.example.matechatting.function.login.LoginState.Companion.ERROR
 import com.example.matechatting.function.login.LoginState.Companion.FIRST
 import com.example.matechatting.function.login.LoginState.Companion.NOT_FIRST
@@ -43,9 +44,9 @@ class LoginRepository(private val accountDao: LoginDao) : BaseRepository {
                     callback(FIRST,payload.token)
                 }else{
                     saveState(account, payload.token)
-                    saveInDB(account, password, payload.token)
                     callback(NOT_FIRST,"")
                 }
+                saveInDB(account, password, payload.token)
             },{
                 callback(ERROR,"")
             })

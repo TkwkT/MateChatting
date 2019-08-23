@@ -22,7 +22,11 @@ class AccessPermissionDialogUtil {
     /**
      * 1
      */
-    fun initAccessPermissionDialog(context: Context, callback: () -> Unit) {
+    fun initAccessPermissionDialog(
+        context: Context,
+        jumpCallback: () -> Unit,
+        cancelCallback: () -> Unit = {}
+    ): AccessPermissionDialogUtil {
         dialog = Dialog(context, R.style.AccessPermissionDialog)
         view = LayoutInflater.from(context).inflate(R.layout.temp_access_permission_dialog, null)
         accessPermissionTitle = view.findViewById(R.id.access_title)
@@ -39,43 +43,67 @@ class AccessPermissionDialogUtil {
         layoutParams?.width = point.x
         dialogWindow?.setGravity(Gravity.CENTER)
         dialogWindow?.attributes = layoutParams
-        Log.d("aaa","isShowing"+isShowing.toString())
-        if (!isShowing){
-            isShowing = true
-            dialog.show()
-        }
-        initCancel()
-        initJump(callback)
+        Log.d("aaa", "isShowing" + isShowing.toString())
+
+        initCancel(cancelCallback)
+        initJump(jumpCallback)
+        return this
     }
 
     /**
      * 2
      */
-    fun setTitle(title:String){
+    fun setTitle(title: String): AccessPermissionDialogUtil {
         accessPermissionTitle.text = title
+        return this
     }
 
     /**
      * 3
      */
-    fun setMessage(message:String){
+    fun setMessage(message: String): AccessPermissionDialogUtil {
         accessPermissionMessage.text = message
+        return this
     }
 
-    private fun initCancel(){
+    /**
+     * 4
+     */
+    fun setOver(text: String): AccessPermissionDialogUtil {
+        accessPermissionJump.text = text
+        return this
+    }
+
+    fun setCancel(text: String): AccessPermissionDialogUtil {
+        accessPermissionCancel.text = text
+        return this
+    }
+
+    fun show(){
+        if (!isShowing) {
+            isShowing = true
+            dialog.show()
+        }
+    }
+
+    private fun initCancel(callback: () -> Unit) {
         accessPermissionCancel.setOnClickListener {
+            callback()
             dialog.dismiss()
             isShowing = false
         }
     }
 
-    private fun initJump(callback:()->Unit){
+
+    private fun initJump(callback: () -> Unit) {
         accessPermissionJump.setOnClickListener {
             callback()
+            dialog.dismiss()
+            isShowing = false
         }
     }
 
-    companion object{
+    companion object {
         private var isShowing = false
     }
 }

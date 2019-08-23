@@ -12,5 +12,5 @@ data class MineBean(
     @SerializedName("profile_photo")
     var headImage: String = ""
 
-):BaseBean()
+)
 

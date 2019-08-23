@@ -25,9 +25,9 @@ class InfoDetailRepository : BaseRepository {
         userBean.apply {
             if (!dire.isNullOrEmpty()) {
                 val sb = StringBuilder()
-                sb.append(dire[0] + " ")
-                sb.append(dire[1] + " ")
-                sb.append(dire[2])
+                sb.append(dire!![0] + " ")
+                sb.append(dire!![1] + " ")
+                sb.append(dire!![2])
                 direction = sb.toString()
             }
             val sb = StringBuilder()

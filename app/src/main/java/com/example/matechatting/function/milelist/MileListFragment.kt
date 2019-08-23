@@ -47,6 +47,15 @@ class MileListFragment : BaseFragment() {
         }
     }
 
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mile_list, container, false)
+        StatusBarUtil.setStatusBarDarkTheme(requireActivity(), true)
+        init()
+//        initSideView()
+
+        return binding.root
+    }
+
     override fun initView() {
         toolbar = binding.mileListToolbar
         sideView = binding.mileListSideview
@@ -80,14 +89,8 @@ class MileListFragment : BaseFragment() {
         requireActivity().startActivityForResult(intent, requestCode)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mile_list, container, false)
-        StatusBarUtil.setStatusBarDarkTheme(requireActivity(), true)
-        init()
-//        initSideView()
 
-        return binding.root
-    }
+
 
     private fun initSideView() {
         sideView.setOnTouchingLetterChangedListener(object : SideView.Companion.OnTouchingLetterChangedListener {

@@ -6,6 +6,7 @@ import com.bumptech.glide.Glide
 import com.example.matechatting.databinding.ItemHomePersonBinding
 import com.example.matechatting.base.BaseHolder
 import com.example.matechatting.base.BaseSource
+import com.example.matechatting.bean.HomeItemBean
 
 class HomeItemPersonHolder(private val binding: ItemHomePersonBinding) : BaseHolder(binding) {
 

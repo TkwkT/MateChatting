@@ -28,16 +28,16 @@ import com.example.matechatting.DIRECT_REQUEST_CODE
 import com.example.matechatting.PERSON_SIGN_REQUEST_CODE
 import com.example.matechatting.bean.UserBean
 import com.example.matechatting.databinding.ActivityMyInfoBinding
-import com.example.matechatting.function.infodetail.InfoDetailViewModel
 import com.example.matechatting.utils.InjectorUtils
 import com.example.matechatting.utils.ToastUtil
+import com.example.matechatting.utils.dialog.AccessPermissionDialogUtil
 
 /**
  * 未实现返回时上传数据@link [initBack]
  * 未完成数据网络拉取
  */
 class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
-//    private lateinit var tv_personsign: TextView
+    //    private lateinit var tv_personsign: TextView
     private lateinit var fl_personsign: ConstraintLayout
     private lateinit var tv_company: TextView
     private lateinit var fl_company: FrameLayout
@@ -62,25 +62,32 @@ class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
     private lateinit var companyTemp: TextView
     private lateinit var jobTemp: TextView
     private lateinit var directionTemp: TextView
-    private lateinit var save:TextView
+    private lateinit var save: TextView
     private lateinit var viewModel: MyInfoViewModel
     private lateinit var doOther: () -> Unit
+    private lateinit var userBeanSave: UserBean
     private lateinit var userBean: UserBean
     private var isGraduated = true
+    private var token = ""
+    private var isFirst = false
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        token = intent.getStringExtra("token")?:""
+        if (token.isNotEmpty()){
+            isFirst = true
+        }
         StatusBarUtil.setRootViewFitsSystemWindows(this, true)
         StatusBarUtil.setStatusBarDarkTheme(this, true)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             StatusBarUtil.setStatusBarColor(this, this.getColor(R.color.bg_ffffff))
         }
         initBinding()
-        initCallback()
-        initView()
-        initBack()
         initData()
+        initView()
+        initCallback()
+        initBack()
         initGraduatedOrUngraduated()
         canSlideFinish(isCanBack = true, needDoOther = true, callback = doOther)
         initSave()
@@ -89,51 +96,69 @@ class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
 
     private fun initCallback() {
         doOther = {
-
+            whenBeak()
         }
     }
 
-//    private fun setunClick() {
-//        et_location.isClickable = false
-//        et_post.isClickable = false
-//        et_company.isClickable = false
-//        et_qq.isClickable = false
-//        et_weixin.isClickable = false
-//        etEmail.isClickable = false
-//    }
+    private fun whenBeak() {
+        changeUserBeanSave()
+        if (userBean != userBeanSave) {
+            AccessPermissionDialogUtil().initAccessPermissionDialog(this, saveCallback, { finish() })
+                .setTitle("尚未保存")
+                .setMessage("您当前的信息尚未保存，是否需要保存")
+                .setOver("保存")
+                .setCancel("取消")
+                .show()
+        } else {
+            finish()
+        }
 
-    /**
-     * 未实现返回时上传数据
-     */
+    }
 
-    private fun initSave(){
+    private fun initSave() {
         save.setOnClickListener {
-            userBean.apply {
-                company = tv_company.text.toString().trim()
-                job = tv_post.text.toString().trim()
-                qqAccount = tv_qq.text.toString().trim().toInt()
-                wechatAccount = tv_weixin.text.toString().trim()
-                email = tv_email.text.toString().trim()
-                city = tv_location.text.toString().trim()
-            }
-            if (isGraduated){
-                userBean.apply {
-                    Log.d("aaa", "userBean: $userBean")
-                    if (company.isEmpty() || job.isEmpty() || graduation.isEmpty()){
-                        ToastUtil().setToast(this@MyinfoActivity,"请填写带\"*\"的必要信息")
-                    }else{
-                        //调用上传数据接口，然后finish()
-                    }
+            saveCallback()
+        }
+    }
+
+    private fun changeUserBeanSave() {
+        userBeanSave.apply {
+            company = tv_company.text.toString().trim()
+            job = tv_post.text.toString().trim()
+            qqAccount = tv_qq.text.toString().trim().toInt()
+            wechatAccount = tv_weixin.text.toString().trim()
+            email = tv_email.text.toString().trim()
+            city = tv_location.text.toString().trim()
+        }
+        userBean.apply {
+            company = company.trim()
+            job = job.trim()
+            qqAccount = qqAccount.toString().trim().toInt()
+            wechatAccount = wechatAccount.trim()
+            email = email.trim()
+            city = city.trim()
+        }
+    }
+
+    private val saveCallback: () -> Unit = {
+        changeUserBeanSave()
+        if (isGraduated) {
+            this.userBeanSave.apply {
+                Log.d("aaa", "userBeanSave: ${this@MyinfoActivity.userBeanSave}")
+                if (company.isEmpty() || job.isEmpty() || graduation.isEmpty()) {
+                    ToastUtil().setToast(this@MyinfoActivity, "请填写带\"*\"的必要信息")
+                } else {
+                    //调用上传数据接口，然后finish()
                 }
-            }else{
-                //调用上传数据接口，然后finish()
             }
+        } else {
+            //调用上传数据接口，然后finish()
         }
     }
 
     private fun initBack() {
         infoBack.setOnClickListener {
-            finish()
+            whenBeak()
         }
     }
 
@@ -141,14 +166,14 @@ class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
         val factory = InjectorUtils.provideMyInfoViewModelFactory(this)
         viewModel = ViewModelProviders.of(this, factory).get(MyInfoViewModel::class.java)
         viewModel.getMyInfo {
-            userBean = it
+            userBeanSave = it
+            userBean = userBeanSave.copy()
         }
         binding.viewmodel = viewModel
     }
 
     private fun initView() {
         binding.apply {
-            //            tv_personsign = tvMyinfoPersonsign
             tv_company = tvMyinfoCompany
             tv_location = tvMyinfoLocation
             tv_post = tvMyinfoPost
@@ -243,8 +268,8 @@ class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK && requestCode == PERSON_SIGN_REQUEST_CODE && data != null) {
-            val personSign: String = data.getStringExtra("personSign")?:""
-            userBean.slogan = personSign
+            val personSign: String = data.getStringExtra("personSign") ?: ""
+            this.userBeanSave.slogan = personSign
         }
     }
 

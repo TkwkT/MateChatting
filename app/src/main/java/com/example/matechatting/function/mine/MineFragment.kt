@@ -129,9 +129,9 @@ class MineFragment : PermissionFragment() {
     override fun showDialogTipUserGoToAppSetting(permission: String) {
         if (permission == Manifest.permission.READ_EXTERNAL_STORAGE) {
             val accessPermissionDialogUtil = AccessPermissionDialogUtil()
-            accessPermissionDialogUtil.initAccessPermissionDialog(requireContext()) {
+            accessPermissionDialogUtil.initAccessPermissionDialog(requireContext(),{
                 gotoAppSetting()
-            }
+            },{}) .show()
         }
     }
 

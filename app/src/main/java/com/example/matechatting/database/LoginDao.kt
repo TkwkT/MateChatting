@@ -1,4 +1,4 @@
-package com.example.matechatting.function.login
+package com.example.matechatting.database
 
 import androidx.room.Dao
 import androidx.room.Delete

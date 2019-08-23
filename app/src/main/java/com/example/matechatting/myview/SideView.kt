@@ -144,10 +144,10 @@ class SideView : View {
         val mHeight = height
         val mWidth = width
         var singleHeight = 0
-        if (isWrap){
-            singleHeight = mHeight / A_Z.length
+        singleHeight = if (isWrap){
+            mHeight / A_Z.length
         }else{
-            singleHeight = mHeight / A_Z.length - 2
+            mHeight / A_Z.length - 2
         }
 
         for (i: Int in 0 until A_Z.length) {
@@ -165,7 +165,11 @@ class SideView : View {
                 canvas.drawCircle(circleX, circleY, (singleHeight / 2).toFloat(), paint)
                 paint.color = chooseTextColor
             }
-            canvas.drawText(A_Z[i].toString(), xPos, yPos, paint)
+            if (i == 0){
+                canvas.drawText(A_Z[i].toString(), xPos, yPos + 7, paint)
+            }else{
+                canvas.drawText(A_Z[i].toString(), xPos, yPos, paint)
+            }
             paint.reset()
         }
     }
@@ -202,7 +206,7 @@ class SideView : View {
     companion object {
         val A_Z = String(
             charArrayOf(
-                'A', 'B', 'C', 'D', 'E', 'F', 'G',
+                42.toChar(),'A', 'B', 'C', 'D', 'E', 'F', 'G',
                 'H', 'I', 'J', 'K', 'L', 'M', 'N',
                 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
                 'V', 'W', 'X', 'Y', 'Z')

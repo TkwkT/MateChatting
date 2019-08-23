@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import com.example.matechatting.R
-import com.example.matechatting.base.BaseRecyclerAdapter
+import com.example.matechatting.bean.HomeItemBean
 import com.example.matechatting.databinding.ItemHomePersonBinding
 
 class HomeItemAdapter(

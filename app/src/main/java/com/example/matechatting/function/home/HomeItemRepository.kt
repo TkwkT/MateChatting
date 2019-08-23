@@ -4,6 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.example.matechatting.base.BaseRepository
+import com.example.matechatting.bean.HomeItemBean
+import com.example.matechatting.database.HomeItemDao
 
 class HomeItemRepository(private val homeItemDao: HomeItemDao) : BaseRepository {
 

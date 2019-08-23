@@ -37,4 +37,8 @@ class MyInfoViewModel(private val repository: MyInfoRepository) : ViewModel() {
             callback(it)
         }
     }
+
+    fun saveData(userBean: UserBean){
+
+    }
 }

@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
+import com.example.matechatting.bean.HomeItemBean
 import com.example.matechatting.utils.NetworkState
 import com.example.matechatting.utils.isNetworkConnected
 

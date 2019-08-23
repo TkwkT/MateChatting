@@ -15,7 +15,7 @@ const val DIRECT_REQUEST_CODE = 0x131
 //从忘记密码页返回登陆页的请求码
 const val FORGET_REQUEST_CODE = 0X132
 
-const val BASE_URL = "http://93tir4.natappfree.cc"
+const val BASE_URL = "http://q6pdqc.natappfree.cc"
 const val PATH = "/static/"
 
 var PAGE = ArrayList<Int>()

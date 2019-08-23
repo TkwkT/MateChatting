@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+	android:id="@+id/item_direction_layout"
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="wrap_content"
+	android:layout_height="wrap_content"
+	android:background="@drawable/shape_direction_lable_unselected">
+
+	<TextView
+		android:id="@+id/item_search_text"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:paddingLeft="13dp"
+		android:paddingRight="13dp"
+		android:paddingTop="7dp"
+		android:paddingBottom="7dp"
+		android:text="java"
+		android:textColor="@color/text_656bff"
+		android:textSize="12sp"/>
+
+</FrameLayout>
