@@ -3,11 +3,13 @@ package com.example.matechatting.function.homesearch
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
 import com.example.matechatting.LOGIN_REQUEST_CODE
 
@@ -28,6 +30,8 @@ class ResultFragment : BaseFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_result, container, false)
+        init()
+        initRecycler()
         return binding.root
     }
 
@@ -36,17 +40,24 @@ class ResultFragment : BaseFragment() {
             loadMore()
         }
         recyclerView = binding.searchResultRecycler
-        adapter = HomeSearchResultAdapter(callbackPersonButton, callbackPersonLayout,{loadMore()})
-        (requireActivity() as HomeSearchActivity).resultArray.value?.let {
-            adapter.frashData(it)
+    }
+
+    private fun initRecycler(){
+        adapter = HomeSearchResultAdapter(callbackPersonButton, callbackPersonLayout, { loadMore() })
+        val array = (requireActivity() as HomeSearchActivity).resultArray
+        if (array.size < 20) {
+            adapter.needGone = true
         }
+        adapter.frashData(array)
+        Log.d("aaa", "resultArray.observe + $array")
+
         recyclerView.adapter = adapter
     }
 
-    private fun loadMore(){
+    private fun loadMore() {
         val activity = requireActivity() as HomeSearchActivity
-        activity.viewModel.getResult(activity.key,getPage()){
-            if (it.size < 20){
+        activity.viewModel.getResult(activity.key, getPage()) {
+            if (it.size < 20) {
                 adapter.needGone = true
             }
             adapter.frashData(it)
@@ -54,7 +65,7 @@ class ResultFragment : BaseFragment() {
         }
     }
 
-    private fun getPage():Int{
+    private fun getPage(): Int {
         return ++page
     }
 
@@ -80,7 +91,6 @@ class ResultFragment : BaseFragment() {
     private fun transferActivity(intent: Intent, requestCode: Int) {
         requireActivity().startActivityForResult(intent, requestCode)
     }
-
 
 
 }

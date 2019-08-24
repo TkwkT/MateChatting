@@ -23,14 +23,15 @@ import androidx.lifecycle.ViewModelProviders
 import com.example.matechatting.DirectionActivity
 import com.example.matechatting.R
 import com.example.matechatting.base.BaseActivity
-import com.example.matechatting.base.PersonsignActivity
 import com.example.matechatting.DIRECT_REQUEST_CODE
 import com.example.matechatting.PERSON_SIGN_REQUEST_CODE
 import com.example.matechatting.bean.UserBean
 import com.example.matechatting.databinding.ActivityMyInfoBinding
 import com.example.matechatting.utils.InjectorUtils
+import com.example.matechatting.utils.NetworkState
 import com.example.matechatting.utils.ToastUtil
 import com.example.matechatting.utils.dialog.AccessPermissionDialogUtil
+import com.example.matechatting.utils.isNetworkConnected
 
 /**
  * 未实现返回时上传数据@link [initBack]
@@ -74,8 +75,8 @@ class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        token = intent.getStringExtra("token")?:""
-        if (token.isNotEmpty()){
+        token = intent.getStringExtra("token") ?: ""
+        if (token.isNotEmpty()) {
             isFirst = true
         }
         StatusBarUtil.setRootViewFitsSystemWindows(this, true)
@@ -142,17 +143,22 @@ class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
 
     private val saveCallback: () -> Unit = {
         changeUserBeanSave()
-        if (isGraduated) {
-            this.userBeanSave.apply {
-                Log.d("aaa", "userBeanSave: ${this@MyinfoActivity.userBeanSave}")
-                if (company.isEmpty() || job.isEmpty() || graduation.isEmpty()) {
-                    ToastUtil().setToast(this@MyinfoActivity, "请填写带\"*\"的必要信息")
-                } else {
-                    //调用上传数据接口，然后finish()
-                }
-            }
+        if (isNetworkConnected(this) == NetworkState.NONE) {
+            ToastUtil().setToast(this@MyinfoActivity, "当前网络不可用，请连接后重试")
         } else {
-            //调用上传数据接口，然后finish()
+            if (isGraduated) {
+                this.userBeanSave.apply {
+                    if (company.isEmpty() || job.isEmpty() || graduation.isEmpty()) {
+                        ToastUtil().setToast(this@MyinfoActivity, "请填写带\"*\"的必要信息")
+                    } else {
+                        viewModel.saveData(userBeanSave)
+                        finish()
+                    }
+                }
+            } else {
+                viewModel.saveData(userBeanSave)
+                finish()
+            }
         }
     }
 
@@ -206,6 +212,7 @@ class MyinfoActivity : BaseActivity<ActivityMyInfoBinding>() {
          */
         fl_personsign.setOnClickListener {
             val intent = Intent(this, PersonsignActivity::class.java)
+            intent.putExtra("slogan", userBeanSave.slogan)
             startActivityForResult(intent, PERSON_SIGN_REQUEST_CODE)
 
         }

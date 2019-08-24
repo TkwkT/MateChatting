@@ -65,5 +65,6 @@ abstract class BaseFragment : Fragment() {
     companion object {
         var isLogin = false
         var account = ""
+        var userId = 0
     }
 }

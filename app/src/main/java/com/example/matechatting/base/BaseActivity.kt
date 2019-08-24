@@ -16,6 +16,7 @@ import com.example.matechatting.listener.NetworkConnectChangeReceiver
 import com.example.matechatting.myview.SlideFinishLayout
 import com.example.matechatting.utils.NetworkState
 import com.example.matechatting.utils.isNetworkConnected
+import java.util.*
 
 abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     protected lateinit var binding: T
@@ -51,10 +52,10 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
         )
 
     }
-    protected fun initBinding(){
+
+    protected fun initBinding() {
         //初始化DataBinding
         binding = DataBindingUtil.setContentView(this, getLayoutId())
-
     }
 
     //获取子Activity的Layout
@@ -95,17 +96,17 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     /**
      * 右滑活动返回相关↓↓↓↓↓↓↓↓
      */
-    fun canSlideFinish(isCanBack: Boolean,needDoOther:Boolean = false,callback:()->Unit = {}) {
+    fun canSlideFinish(isCanBack: Boolean, needDoOther: Boolean = false, callback: () -> Unit = {}) {
         if (isCanBack) {
-            initSlideFinish(needDoOther,callback)
+            initSlideFinish(needDoOther, callback)
         }
     }
 
-    private fun initSlideFinish(needDoOther:Boolean = false,callback:()->Unit = {}) {
+    private fun initSlideFinish(needDoOther: Boolean = false, callback: () -> Unit = {}) {
         slideFinishLayout = LayoutInflater.from(this).inflate(
             R.layout.slidefinish_container, null
         ) as? SlideFinishLayout<T>
-        slideFinishLayout!!.attachToActivity(this,needDoOther,callback)
+        slideFinishLayout!!.attachToActivity(this, needDoOther, callback)
     }
 
     fun addIgnoredView(v: View) {

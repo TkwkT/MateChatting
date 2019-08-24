@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.matechatting.bean.HomeItemBean
+import io.reactivex.Single
 
 @Dao
 interface HomeItemDao{
@@ -15,4 +16,7 @@ interface HomeItemDao{
 
     @Query("SELECT * FROM home_item")
     fun getHomeItem(): DataSource.Factory<Int, HomeItemBean>
+
+    @Query("SELECT * FROM home_item LIMIT :first,:first + 20")
+    fun getHomeItemLimit(first:Int): Single<List<HomeItemBean>>
 }

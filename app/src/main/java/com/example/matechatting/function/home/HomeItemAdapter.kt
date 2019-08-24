@@ -1,11 +1,9 @@
 package com.example.matechatting.function.home
 
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
-import androidx.paging.PagedListAdapter
+import android.util.Log
 import androidx.recyclerview.widget.DiffUtil
 import com.example.matechatting.R
+import com.example.matechatting.base.BaseRecyclerAdapter
 import com.example.matechatting.bean.HomeItemBean
 import com.example.matechatting.databinding.ItemHomePersonBinding
 
@@ -13,28 +11,31 @@ class HomeItemAdapter(
     var callbackPersonButton: () -> Unit,
     var callbackPersonLayout: (Int) -> Unit
 ) :
-    PagedListAdapter<HomeItemBean,HomeItemPersonHolder>(diffCallback) {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HomeItemPersonHolder {
-        val binding = DataBindingUtil.inflate<ItemHomePersonBinding>(
-            LayoutInflater.from(parent.context),
-            R.layout.item_home_person, parent, false
-        )
+    BaseRecyclerAdapter<ItemHomePersonBinding, HomeItemBean, HomeItemPersonHolder, HomeItemSource>() {
+
+    override fun freshData(list: List<HomeItemBean>) {
+        val arrayList = ArrayList<HomeItemBean>()
+        arrayList.addAll(list)
+        mDiffer.submitList(arrayList)
+
+    }
+
+    override fun onCreate(binding: ItemHomePersonBinding): HomeItemPersonHolder {
         return HomeItemPersonHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: HomeItemPersonHolder, position: Int) {
-        getItem(position).let {bean->
-            if (bean != null){
-                holder.bind(HomeItemSource(bean))
-                holder.getLayout().setOnClickListener { callbackPersonLayout(bean.id) }
-                holder.getButton().setOnClickListener { callbackPersonButton() }
-            }
-        }
+    override fun getItem(position: Int): HomeItemSource {
+        return HomeItemSource(mDiffer.currentList[position])
     }
-    companion object{
-        val diffCallback = object : DiffUtil.ItemCallback<HomeItemBean>() {
+
+    override fun getLayoutId(): Int {
+        return R.layout.item_home_person
+    }
+
+    override fun initDiffCallback(): DiffUtil.ItemCallback<HomeItemBean> {
+        return object : DiffUtil.ItemCallback<HomeItemBean>() {
             override fun areItemsTheSame(oldItem: HomeItemBean, newItem: HomeItemBean): Boolean {
-                return oldItem == newItem
+                return oldItem.name == newItem.name
             }
 
             override fun areContentsTheSame(oldItem: HomeItemBean, newItem: HomeItemBean): Boolean {
@@ -42,4 +43,14 @@ class HomeItemAdapter(
             }
         }
     }
+
+    override fun onBind(holder: HomeItemPersonHolder, position: Int) {
+        getItem(position).let { bean ->
+            holder.bind(bean)
+            holder.getLayout().setOnClickListener { callbackPersonLayout(bean.homeItemBean.id) }
+            holder.getButton().setOnClickListener { callbackPersonButton() }
+        }
+    }
+
+
 }

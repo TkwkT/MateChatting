@@ -13,6 +13,8 @@ interface UserInfoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUserInfo(userBean: UserBean)
 
-    @Query("SELECT * FROM user_info")
-    fun getUserInfo(): Single<UserBean>
+    @Query("SELECT * FROM user_info WHERE id = :id")
+    fun getUserInfo(id:Int): Single<UserBean>
+
+
 }

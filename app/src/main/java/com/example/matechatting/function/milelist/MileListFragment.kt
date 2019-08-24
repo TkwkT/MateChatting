@@ -12,6 +12,7 @@ import android.widget.Button
 import android.widget.LinearLayout
 import androidx.appcompat.widget.Toolbar
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.example.matechatting.LOGIN_REQUEST_CODE
 import com.example.matechatting.function.main.MainActivity
 import com.example.matechatting.function.main.MyOnTouchListener
@@ -29,6 +30,7 @@ class MileListFragment : BaseFragment() {
     private lateinit var unLoginLayout: LinearLayout
     private lateinit var loginLayout: LinearLayout
     private lateinit var loginButton: Button
+    private lateinit var recycler: RecyclerView
 
     private var changing = false
     private val myOnTouchListener = object : MyOnTouchListener {
@@ -51,8 +53,6 @@ class MileListFragment : BaseFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_mile_list, container, false)
         StatusBarUtil.setStatusBarDarkTheme(requireActivity(), true)
         init()
-//        initSideView()
-
         return binding.root
     }
 
@@ -60,10 +60,16 @@ class MileListFragment : BaseFragment() {
         toolbar = binding.mileListToolbar
         sideView = binding.mileListSideview
         unLoginLayout = binding.mileListUnloginLayout
-        loginLayout = binding.mileListUnloginLayout
+        loginLayout = binding.mileListLoginLayout
         loginButton = binding.mileListLoginButton
+        recycler = binding.mileListRecycler
         (requireActivity() as? MainActivity)?.registerMyOnTouchListener(myOnTouchListener)
         initSideView()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        init()
     }
 
     /**
@@ -88,8 +94,6 @@ class MileListFragment : BaseFragment() {
     private fun transferActivity(intent: Intent, requestCode: Int) {
         requireActivity().startActivityForResult(intent, requestCode)
     }
-
-
 
 
     private fun initSideView() {

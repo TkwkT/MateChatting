@@ -71,7 +71,7 @@ interface ChangeResetPassService {
      */
     @FormUrlEncoded
     @POST("/user/change_by_code")
-    fun changePassword(@Field("password") newPath: String): Observable<SBean>
+    fun changePassword(@Field("pass") newPath: String): Observable<SBean>
 }
 
 interface PostImageService {
@@ -108,7 +108,7 @@ interface GetUserByIdService {
 
 interface GetMineService {
     @POST("/user/get_user_by_token")
-    fun getMine(): Observable<MineBean>
+    fun getMine(): Observable<UserBean>
 }
 
 interface GetMyInfoService {
@@ -120,4 +120,10 @@ interface SearchService {
     @FormUrlEncoded
     @POST("/get_user_by_key")
     fun getResult(@Field("key") key: String, @Field("page") page: Int, @Field("size") size: Int = 20): Observable<SearchBean>
+}
+
+interface UpdateUserInfoService{
+    @POST("/user/userUpdate")
+    fun update(@Body()userBean: PostUserBean):Observable<SBean>
+
 }

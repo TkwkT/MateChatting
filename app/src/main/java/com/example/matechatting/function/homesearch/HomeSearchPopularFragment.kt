@@ -35,6 +35,7 @@ class HomeSearchPopularFragment : Fragment() {
                 val activity = (requireActivity() as HomeSearchActivity)
                 activity.key = labelArray[i]
                 activity.getData()
+                Log.d("aaa","点击了 key:" + labelArray[i])
             }
             flowLayout.addView(view)
         }

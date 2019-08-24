@@ -1,5 +1,6 @@
 package com.example.matechatting.function.myinfo
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 import com.example.matechatting.bean.UserBean
@@ -39,6 +40,7 @@ class MyInfoViewModel(private val repository: MyInfoRepository) : ViewModel() {
     }
 
     fun saveData(userBean: UserBean){
-
+        Log.d("aaa","saveData")
+        repository.saveMyInfo(userBean)
     }
 }

@@ -12,6 +12,8 @@ data class SPLoginBean(
         @SerializedName("first")
         var first: Boolean,
         @SerializedName("token")
-        var token: String
+        var token: String,
+        @SerializedName("id")
+        var id:Int
     )
 }

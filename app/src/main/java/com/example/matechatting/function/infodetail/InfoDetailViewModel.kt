@@ -1,6 +1,5 @@
 package com.example.matechatting.function.infodetail
 
-import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 

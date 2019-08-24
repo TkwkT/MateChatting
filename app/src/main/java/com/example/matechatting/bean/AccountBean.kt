@@ -9,5 +9,6 @@ data class AccountBean(
     val account:String,
     val password:String,
     val token:String,
-    val login:Boolean
+    val login:Boolean,
+    val id:Int
 )

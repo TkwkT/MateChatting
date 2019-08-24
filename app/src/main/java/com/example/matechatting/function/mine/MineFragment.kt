@@ -84,7 +84,7 @@ class MineFragment : PermissionFragment() {
         changePassword.isEnabled = true
         myInformation.isEnabled = true
         bindPhone.isEnabled = true
-        headLayout.isEnabled = false
+        headLayout.isEnabled = true
         functionLayout.isEnabled = false
         val intentToChangePassword = Intent(requireActivity(), ChangePasswordActivity::class.java)
         changePassword.setOnClickListener {
@@ -92,6 +92,9 @@ class MineFragment : PermissionFragment() {
         }
         val intentToMyInfo = Intent(requireActivity(), MyinfoActivity::class.java)
         myInformation.setOnClickListener {
+            transferActivity(intentToMyInfo, 0x999)
+        }
+        headLayout.setOnClickListener {
             transferActivity(intentToMyInfo, 0x999)
         }
         val intentToBindPhone = Intent(requireActivity(), BindPhoneActivity::class.java)
@@ -129,9 +132,9 @@ class MineFragment : PermissionFragment() {
     override fun showDialogTipUserGoToAppSetting(permission: String) {
         if (permission == Manifest.permission.READ_EXTERNAL_STORAGE) {
             val accessPermissionDialogUtil = AccessPermissionDialogUtil()
-            accessPermissionDialogUtil.initAccessPermissionDialog(requireContext(),{
+            accessPermissionDialogUtil.initAccessPermissionDialog(requireContext(), {
                 gotoAppSetting()
-            },{}) .show()
+            }, {}).show()
         }
     }
 
@@ -145,7 +148,7 @@ class MineFragment : PermissionFragment() {
      * 处理未登陆时的点击事件以及未登陆时的逻辑
      */
     override fun initNotLogin() {
-        Log.d("aaa","initNotLogin")
+        Log.d("aaa", "initNotLogin")
 
         headImage.isEnabled = false
         changePassword.isEnabled = false

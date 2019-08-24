@@ -1,5 +1,6 @@
 package com.example.matechatting.function.homesearch
 
+import android.util.Log
 import com.example.matechatting.base.BaseRepository
 import com.example.matechatting.bean.SearchBean
 import com.example.matechatting.bean.UserBean
@@ -16,7 +17,12 @@ class HomeSearchRepository : BaseRepository {
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                callback(setInfo(it.payload))
+                if (it.success){
+                    callback(setInfo(it.payload))
+                }else{
+                    callback(ArrayList())
+                }
+
             }, {})
     }
 
@@ -33,8 +39,7 @@ class HomeSearchRepository : BaseRepository {
         }
         for (a: SearchBean.Payload.MyArray.Map in array) {
             a.apply {
-
-                if (directions.empty) {
+                if (!directions.empty) {
                     val sb = StringBuilder()
                     sb.append(directions.myArrayList[0] + " ")
                     sb.append(directions.myArrayList[1] + " ")

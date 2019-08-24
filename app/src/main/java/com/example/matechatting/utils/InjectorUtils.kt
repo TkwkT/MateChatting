@@ -71,12 +71,24 @@ object InjectorUtils {
         return HomeItemViewModelFactory(getHomeItemRepository(context))
     }
 
+    fun getInfoDetailRepository(context: Context): InfoDetailRepository {
+        return InfoDetailRepository.getInstance(
+            AppDatabase.getInstance(context.applicationContext).userInfoDao()
+        )
+    }
+
     fun provideInfoDetailViewModelFactory(context: Context): InfoDetailViewModelFactory {
-        return InfoDetailViewModelFactory(InfoDetailRepository())
+        return InfoDetailViewModelFactory(getInfoDetailRepository(context))
+    }
+
+    fun getMineRepository(context: Context): MineRepository {
+        return MineRepository.getInstance(
+            AppDatabase.getInstance(context.applicationContext).userInfoDao()
+        )
     }
 
     fun provideMineViewModelFactory(context: Context): MineViewModelFactory {
-        return MineViewModelFactory(MineRepository())
+        return MineViewModelFactory(getMineRepository(context))
     }
 
     fun getAccountRepository(context: Context): AccountRepository {
@@ -85,8 +97,14 @@ object InjectorUtils {
         )
     }
 
+    fun getMyInfoRepository(context: Context): MyInfoRepository {
+        return MyInfoRepository.getInstance(
+            AppDatabase.getInstance(context.applicationContext).userInfoDao()
+        )
+    }
+
     fun provideMyInfoViewModelFactory(context: Context): MyInfoViewModelFactory {
-        return MyInfoViewModelFactory(MyInfoRepository())
+        return MyInfoViewModelFactory(getMyInfoRepository(context))
     }
 
     fun provideHomeSearchViewModelFactory(context: Context): HomeSearchViewModelFactory {

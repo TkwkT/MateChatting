@@ -1,5 +1,6 @@
 package com.example.matechatting.function.mine
 
+import android.util.Log
 import androidx.databinding.ObservableField
 import androidx.lifecycle.ViewModel
 
@@ -15,8 +16,10 @@ class MineViewModel(private val repository: MineRepository) : ViewModel() {
                 if (name.isNullOrEmpty()){
                     mineName.set(defaultName)
                 }
+                mineName.set(name)
                 mineSlogan.set(slogan)
             }
+            Log.d("aaa",it.toString())
         }
     }
 }

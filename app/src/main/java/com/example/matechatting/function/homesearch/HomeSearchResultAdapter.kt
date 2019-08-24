@@ -1,5 +1,6 @@
 package com.example.matechatting.function.homesearch
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,12 +52,14 @@ class HomeSearchResultAdapter(
 
     override fun onBindViewHolder(holder: BaseHolder, position: Int) {
         when (holder) {
-            is HomeItemPersonHolder -> {
+            is HomeSearchResultHolder -> {
+                Log.d("aaa","HomeItemPersonHolder")
                 holder.bind(HomeSearchResultSource(getItem(position)))
                 holder.getLayout().setOnClickListener { callbackPersonLayout(getItem(position).id) }
                 holder.getButton().setOnClickListener { callbackPersonButton() }
             }
             is HomeSearchResultFootHolder -> {
+                Log.d("aaa","HomeSearchResultFootHolder")
                 if (needGone) {
                     holder.getView().visibility = View.GONE
                 } else {
@@ -76,8 +79,9 @@ class HomeSearchResultAdapter(
     }
 
     override fun getItemViewType(position: Int): Int {
+        Log.d("aaa","position $position  dataList.size ${dataList.size}" )
         return when (position) {
-            dataList.size + 1 -> FOOT
+            dataList.size -> FOOT
             else -> VIEW
         }
     }

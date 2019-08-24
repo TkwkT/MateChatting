@@ -26,6 +26,9 @@ import com.example.matechatting.function.bindphone.BindPhoneState.Companion.ERRO
 import com.example.matechatting.function.bindphone.BindPhoneState.Companion.OK
 import com.example.matechatting.function.bindphone.BindPhoneState.Companion.PHONE_ERROR
 import com.example.matechatting.function.bindphone.BindPhoneState.Companion.PHONE_NULL
+import com.example.matechatting.utils.NetworkState
+import com.example.matechatting.utils.ToastUtil
+import com.example.matechatting.utils.isNetworkConnected
 
 class ForgetPasswordFragment : BaseFragment() {
     private lateinit var binding: FragmentFrogetPasswordBinding
@@ -108,20 +111,20 @@ class ForgetPasswordFragment : BaseFragment() {
         codeEdit.addTextChangedListener(EditTextTextChangeListener({
             if (it.isNotEmpty()) {
                 codeClear.visibility = View.VISIBLE
-                codeNotNull = true
                 if (it.length == 6) {
-                    viewModel.checkCode(phoneEdit.text.toString(), codeEdit.text.toString()) { result ->
-                        when (result) {
-                            PHONE_NULL -> phoneError.text = "请先输入手机号"
-                            CODE_NULL -> codeError.text = "请输入验证码"
-                            CODE_ERROR -> codeError.text = "请输入六位数字验证码"
-                            PHONE_ERROR -> phoneError.text = "手机号码输入错误"
-                            ERROR -> codeError.text = "验证错误"
-                            OK -> {
-                                replace()
-                            }
-                        }
-                    }
+                    codeNotNull = true
+//                    viewModel.checkCode(phoneEdit.text.toString(), codeEdit.text.toString()) { result ->
+//                        when (result) {
+//                            PHONE_NULL -> phoneError.text = "请先输入手机号"
+//                            CODE_NULL -> codeError.text = "请输入验证码"
+//                            CODE_ERROR -> codeError.text = "请输入六位数字验证码"
+//                            PHONE_ERROR -> phoneError.text = "手机号码输入错误"
+//                            ERROR -> codeError.text = "验证错误"
+//                            OK -> {
+//                                replace()
+//                            }
+//                        }
+//                    }
                 }
             } else {
                 codeClear.visibility = View.GONE
@@ -240,20 +243,31 @@ class ForgetPasswordFragment : BaseFragment() {
      */
     private fun initNextButton() {
         nextButton.setOnClickListener {
-            replace()
+            if (isNetworkConnected(requireContext()) == NetworkState.NONE){
+                ToastUtil().setToast(requireContext(),"当前网络不可用")
+            }else{
+                viewModel.checkCode(phoneEdit.text.toString(), codeEdit.text.toString()) { result ->
+                    when (result) {
+                        PHONE_NULL -> phoneError.text = "请先输入手机号"
+                        CODE_NULL -> codeError.text = "请输入验证码"
+                        CODE_ERROR -> codeError.text = "请输入六位数字验证码"
+                        PHONE_ERROR -> phoneError.text = "手机号码输入错误"
+                        ERROR -> codeError.text = "验证错误"
+                        OK -> {
+                            replace()
+                        }
+                    }
+                }
+            }
         }
     }
 
     override fun onStop() {
         super.onStop()
         isFinish = true
-        Log.d("aaa","isFinish$isFinish")
     }
 
     private fun replace(){
-        Log.d("aaa",this@ForgetPasswordFragment.isDetached.toString())
-        Log.d("aaa","account" + ForgetPasswordActivity.account)
-        Log.d("aaa","token" + ForgetPasswordActivity.token)
         (requireActivity() as ForgetPasswordActivity).replaceFragment(ResetPasswordFragment(), "重置密码")
     }
 

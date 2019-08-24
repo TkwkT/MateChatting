@@ -17,47 +17,47 @@ import io.reactivex.schedulers.Schedulers
 
 class LoginRepository(private val accountDao: LoginDao) : BaseRepository {
 
-    fun checkFromDatabase(account: String, password: String, callback: (state: Int,token:String) -> Unit) {
+    fun checkFromDatabase(account: String, password: String, callback: (state: Int, token: String) -> Unit) {
         accountDao.checkAccount(account)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
                 if (password == it.password) {
-                    saveState(account, it.token)
-                    callback(NOT_FIRST,"")
+                    saveState(account, it.token, it.id)
+                    callback(NOT_FIRST, "")
                 } else if (password != it.password) {
-                    callback(ERROR,"")
+                    callback(ERROR, "")
                 }
             }, {
-                callback(NO_NETWORK,"")
+                callback(NO_NETWORK, "")
             })
     }
 
-    fun checkFromNetwork(account: String, password: String, callback: (state: Int,token:String) -> Unit) {
+    fun checkFromNetwork(account: String, password: String, callback: (state: Int, token: String) -> Unit) {
         IdeaApi.getApiService(LoginService::class.java, false).getLoginAndGetToken(account, password)
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                Log.d("aaa","checkFromNetwork : $it")
+                Log.d("aaa", "checkFromNetwork : $it")
                 val payload = it.payload
-                if (payload.first){
-                    callback(FIRST,payload.token)
-                }else{
-                    saveState(account, payload.token)
-                    callback(NOT_FIRST,"")
+                if (payload.first) {
+                    callback(FIRST, payload.token)
+                } else {
+                    saveState(account, payload.token, payload.id)
+                    callback(NOT_FIRST, "")
                 }
-                saveInDB(account, password, payload.token)
-            },{
-                callback(ERROR,"")
+                saveInDB(account, password, payload.token, payload.id)
+            }, {
+                callback(ERROR, "")
             })
     }
 
-    private fun saveState(account: String, token: String) {
-        MyApplication.saveLoginState(account, token)
+    private fun saveState(account: String, token: String, id: Int) {
+        MyApplication.saveLoginState(account, token, id)
     }
 
-    private fun saveInDB(account: String, password: String, token: String) {
-        val accountBean = AccountBean(account, password, token, true)
+    private fun saveInDB(account: String, password: String, token: String, id: Int) {
+        val accountBean = AccountBean(account, password, token, true, id)
         runOnNewThread {
             accountDao.insertAccount(accountBean)
         }
